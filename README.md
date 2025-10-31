@@ -13,9 +13,9 @@ Image will be here
 
   To setup LET LOOSE so that it runs, and runs smoothly please download it, extract the file and run the EXE file. (Other setup not yet known)
 
-# Contribution Rules and License
+## Contribution Rules and License
 
-# Our Team
+## Our Team
 
 Ewan Carver - Programming, Weapon and Enemy design
 
