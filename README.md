@@ -22,3 +22,11 @@ Ewan Carver - Programming, Weapon and Enemy design
 Grace Perry - Web and level design
 
 Gabriel Farley - Programming, Environment design, and Writer
+
+# Developement Information
+### Basic information on our developement process and progress
+
+## Timeline
+
+## Class Diagram
+
