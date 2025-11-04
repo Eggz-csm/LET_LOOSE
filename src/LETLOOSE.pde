@@ -1,42 +1,44 @@
-Level lev;
-boolean moveLeft = false;
-boolean moveRight = false;
+// Gabriel Farley, Ewan Carver, and Grace Perry | 11 Nov 2025 | LETLOOSE
+Player p1;
+LevelManage lvm;
 
 void setup() {
-  size(500, 500);
-  lev = new Level(250, 250);
+  size(500,500);
+  p1 = new Player();
+  lvm = new LevelManage();
 }
 
 void draw() {
-  background(0);
-
-  // Handle continuous movement
-  if (moveLeft) {
-    lev.x -= 5;
+  lvm.display();
+  if (p1.moveLeft) {
+    p1.x -= 5;
   }
-  if (moveRight) {
-    lev.x += 5;
+  if (p1.moveRight) {
+    p1.x += 5;
   }
-
-  lev.display();
+  p1.display();
+  p1.move(p1.x,p1.y);
 }
 
-// When a key is pressed down
+void mousePressed() {
+}
+
 void keyPressed() {
   if (key == 'a' || key == 'A') {
-    moveLeft = true;
+    p1.moveLeft = true;
   }
   if (key == 'd' || key == 'D') {
-    moveRight = true;
+    p1.moveRight = true;
   }
 }
 
 // When the key is released
 void keyReleased() {
   if (key == 'a' || key == 'A') {
-    moveLeft = false;
+    p1.moveLeft = false;
   }
   if (key == 'd' || key == 'D') {
-    moveRight = false;
+    p1.moveRight = false;
   }
 }
+
