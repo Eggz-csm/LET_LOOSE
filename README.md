@@ -29,7 +29,7 @@ Gabriel Farley - Programming, Environment design, and Writer
 
 ## Timeline
 
-![Timeline](https://github.com/Eggz-csm/LET_LOOSE/blob/main/PreBuild_Images/ClassDiagram.png?raw=true)
+![Timeline](https://github.com/Eggz-csm/LET_LOOSE/blob/main/PreBuild_Images/Timeline.png?raw=true)
 
 ## Class Diagram
 
