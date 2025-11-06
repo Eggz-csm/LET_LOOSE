@@ -2,6 +2,8 @@
 Player p1;
 LevelManage lvm;
 ArrayList<Platform> platforms = new ArrayList<Platform>();
+float camX = 0;
+float camY = 0;
 
 void setup() {
   size(500, 500);
@@ -10,14 +12,30 @@ void setup() {
 }
 
 void draw() {
-  lvm.display();
+  background(22);
+  // Target camera position (centered on player)
+  float targetCamX = width/2 - p1.x;
+  float targetCamY = height/2 - p1.y; // or 0 if you only want horizontal scrolling
 
+  // Smoothly interpolate (lerp) toward the target
+  float lerpSpeed = 0.1; // smaller = smoother/slower camera
+  camX = lerp(camX, targetCamX, lerpSpeed);
+  camY = lerp(camY, targetCamY, lerpSpeed);
+
+  // Apply camera transform
+  pushMatrix();
+  translate(camX, camY);
+
+  // Draw world
+  lvm.display();
   for (Platform p : platforms) {
     p.display();
   }
 
   p1.update(platforms);
   p1.display();
+
+  popMatrix();
 }
 
 void mousePressed() {
