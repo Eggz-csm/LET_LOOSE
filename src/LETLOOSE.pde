@@ -18,7 +18,7 @@ void draw() {
   float targetCamY = height/2 - p1.y; // or 0 if you only want horizontal scrolling
 
   // Smoothly interpolate (lerp) toward the target
-  float lerpSpeed = 0.1; // smaller = smoother/slower camera
+  float lerpSpeed = 0.14; // smaller = smoother/slower camera
   camX = lerp(camX, targetCamX, lerpSpeed);
   camY = lerp(camY, targetCamY, lerpSpeed);
 
