@@ -26,6 +26,9 @@ Gabriel Farley - Programming, Environment design, and Writer
 # Developement Information
 ### Basic information on our developement process and progress
 
+## Assets
+
+![Running](https://github.com/Eggz-csm/LET_LOOSE/blob/main/PreBuild_Images/Runguy.gif?raw=true)
 
 ## Timeline
 
