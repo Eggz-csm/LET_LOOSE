@@ -9,7 +9,6 @@ levTest() {
 }
 
   void display() {
-  background(22);
   }
 
 }
