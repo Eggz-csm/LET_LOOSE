@@ -1,4 +1,5 @@
 // Gabriel Farley, Ewan Carver, and Grace Perry | 11 Nov 2025 | LETLOOSE
+import gifAnimation.*;
 Player p1;
 LevelManage lvm;
 ArrayList<Platform> platforms = new ArrayList<Platform>();
@@ -8,7 +9,7 @@ float camY = 0;
 
 void setup() {
   size(500, 500);
-  p1 = new Player();
+  p1 = new Player(this);
   lvm = new LevelManage();
 }
 
