@@ -2,6 +2,7 @@
 Player p1;
 LevelManage lvm;
 ArrayList<Platform> platforms = new ArrayList<Platform>();
+
 float camX = 0;
 float camY = 0;
 
@@ -30,6 +31,7 @@ void draw() {
   lvm.display();
   for (Platform p : platforms) {
     p.display();
+    p.update();
   }
 
   p1.update(platforms);
@@ -53,7 +55,7 @@ void keyPressed() {
 
 // When the key is released
 void keyReleased() {
-   if (key == 'a' || key == 'A') p1.moveLeft = false;
+  if (key == 'a' || key == 'A') p1.moveLeft = false;
   if (keyCode == LEFT) p1.moveLeft = false;
   if (key == 'd'|| key == 'D') p1.moveRight = false;
   if (keyCode == RIGHT) p1.moveRight = false;
