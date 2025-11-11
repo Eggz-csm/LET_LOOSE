@@ -8,7 +8,7 @@ class Player {
 
   Player() {
     x = width / 2;
-    y = 100;
+    y = 400;
     w = 50;
     h = 50;
     ms = 5;
@@ -25,6 +25,16 @@ class Player {
   }
 
   void update(ArrayList<Platform> platforms) {
+    // --- Move with moving platforms BEFORE gravity ---
+    if (isOnGround) {
+      for (Platform p : platforms) {
+        if (collidesWith(p) && p.moving) {
+          x += p.getDX();
+          y += p.getDY();
+        }
+      }
+    }
+
     // --- Apply player input ---
     if (moveLeft)  xVel = -ms;
     else if (moveRight) xVel = ms;
@@ -58,20 +68,26 @@ class Player {
     }
   }
 
-  // --- Handle vertical collisions only ---
+  // --- Handle vertical collisions ---
   void resolveVerticalCollisions(ArrayList<Platform> platforms) {
     boolean groundedThisFrame = false;
 
     for (Platform p : platforms) {
       if (collidesWith(p)) {
-        // Falling down onto platform
-        if (yVel > 0) {
+        // --- Falling DOWN onto platform ---
+        if (yVel > 0 && (y - h/2) < p.y) { // solid top only
           y = p.y - h/2;
           yVel = 0;
           groundedThisFrame = true;
+
+          // --- Move with platform if it's moving ---
+          if (p.moving) {
+            x += p.getDX();
+            y += p.getDY();
+          }
         }
-        // Jumping up into platform
-        else if (yVel < 0) {
+        // --- Jumping UP into platform ---
+        else if (yVel < 0 && (y + h/2) > (p.y + p.h)) {
           y = p.y + p.h + h/2;
           yVel = 0;
         }
@@ -79,6 +95,9 @@ class Player {
     }
 
     isOnGround = groundedThisFrame;
+
+    // Minor jitter fix
+    if (isOnGround && abs(yVel) < 0.1) yVel = 0;
   }
 
   boolean collidesWith(Platform p) {
