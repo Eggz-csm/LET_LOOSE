@@ -1,5 +1,5 @@
 # "LET LOOSE"
-### 10/30/2025 | A Gaming Developement Project made by  Gabriel Farley, Ewan Carver, and Grace Perry
+### 10/30/2025 | A Game Development Project made by  Gabriel Farley, Ewan Carver, and Grace Perry
 
 ![LetLooseCover](https://github.com/Eggz-csm/LET_LOOSE/blob/main/PreBuild_Images/RoughStart.png?raw=true)
 
