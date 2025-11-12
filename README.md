@@ -23,12 +23,12 @@ Grace Perry - Web and level design
 
 Gabriel Farley - Programming, Environment design, and Writer
 
-# Developement Information
+# Development Information
 ### Basic information on our developement process and progress
 
 ## Assets
 
-![Running](https://github.com/Eggz-csm/LET_LOOSE/blob/main/PreBuild_Images/RunGuy.gif?raw=true)
+![Running](https://github.com/Eggz-csm/LET_LOOSE/blob/main/PreBuild_Images/Runguybig.gif?raw=true)
 
 ## Timeline
 
