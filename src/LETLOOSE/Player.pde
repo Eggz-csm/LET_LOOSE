@@ -3,9 +3,10 @@ class Player {
   float xVel, yVel;
   float gravity, jumpStrength;
   boolean moveLeft, moveRight;
-  boolean isOnGround;
+  boolean isOnGround, faceRight;
   float ms;
   Gif runGif;
+  PImage still;
 
   Player(PApplet app) {
     x = width / 2;
@@ -17,8 +18,9 @@ class Player {
     yVel = 0;
     gravity = 0.8;
     jumpStrength = -15;
-    runGif  = new Gif(app, "RunGuy.gif");
+    runGif  = new Gif(app, "Runguy.gif");
     runGif.play();
+    still = loadImage("Stillguy.png");
   }
 
   void display() {
@@ -30,9 +32,19 @@ class Player {
     if (moveLeft) {
       scale(-1, 1);
       image(runGif, -x, y, w, w);
-    } else {
+      faceRight = false;
+    } else if (moveRight) {
       image(runGif, x, y, w, w);
+      faceRight = true;
+    } else {
+      if (faceRight) {
+      image(still, x, y, w, w);
+      } else {
+      scale(-1, 1);
+      image(still, -x, y, w, w);
+      }
     }
+    
     popMatrix();
   }
 
