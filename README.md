@@ -27,7 +27,7 @@ Gabriel Farley - Programming, Environment design, and Writer
 
 ## Assets
 
-![Running](https://github.com/Eggz-csm/LET_LOOSE/blob/main/PreBuild_Images/Runguybig.gif?raw=true)
+![Running](https://github.com/Eggz-csm/LET_LOOSE/blob/main/PreBuild_Images/Runguybig.gif?raw=true) ![Gorp](https://github.com/Eggz-csm/LET_LOOSE/blob/main/PreBuild_Images/bigGorp.gif?raw=true)
 
 ## Timeline
 
