@@ -1,49 +1,39 @@
 class Gun {
-  float x;
-  float y;
+  Player p;
+  float angle = 0;
+  float length = 35;   // how far barrel extends from player center
+  float thickness = 8; // visual thickness
+  float offsetRadius = 0; // if you want the gun to orbit slightly away from center
 
-  float vx;
-  float vy;
-
-  //laser look
-  float speed =15;
-  float length =30;
-  float thickness = 4;
-  color laserColor = color(93, 243, 255);
-
-  //constructor
-  Gun(float startX, float startY, float targetX, float targetY) {
-    this.x = startX;
-    this.y = startY;
-    //calc the vector from player to mouse
-    float dx = targetX -startX;
-    float dy = targetY -startY;
-    //calc distance
-    float distance = sqrt(dx*dx + dy*dy);
-
-    if (distance>0) {
-      this.vx =(dx/distance)*speed;
-      this.vy=(dy/distance) *speed;
-    } else {
-      this.vx =0;
-      this.vy =-speed;
-    }
+  Gun(Player p) {
+    this.p = p;
   }
 
-  void move() {
-    x+= vx;
-    y+= vy;
+  void update(float targetX, float targetY) {
+    // angle pointing from player center to mouse in world coords
+    angle = atan2(targetY - p.y, targetX - p.x);
   }
 
   void display() {
-    stroke(laserColor);
-    strokeWeight(thickness);
-    line(x, y, x-vx*(length/speed), y-vy*(length/speed));
+    pushMatrix();
+    translate(p.x, p.y); // player center in world coords
+    rotate(angle);
+    noStroke();
+    fill(80);
+    // Draw barrel (rectangle). Draw from player center to the right (0..length)
+      rectMode(CORNER);
+    // shift upward so it's centered vertically
+    rect(offsetRadius, -thickness/2, length, thickness, 3);
+    // draw small muzzle
+    fill(200,160,50);
+    rect(offsetRadius + length, -thickness/2 - 2, 6, thickness + 4, 2);
+    popMatrix();
   }
 
-  boolean isOffScreen() {
-    float margin =50;
-    return x< camX - margin || x>camX +width + margin ||
-      y <camY - margin || y> camY + height + margin;
+  void fire(float targetX, float targetY, ArrayList<Bullet> bullets) {
+    // spawn bullet at muzzle position (world)
+    float muzzleX = p.x + cos(angle) * (offsetRadius + length + 6); // a bit ahead of barrel
+    float muzzleY = p.y + sin(angle) * (offsetRadius + length + 6);
+    bullets.add(new Bullet(muzzleX, muzzleY, angle));
   }
 }
