@@ -3,6 +3,7 @@ import gifAnimation.*;
 Player p1;
 LevelManage lvm;
 ArrayList<Platform> platforms = new ArrayList<Platform>();
+ArrayList<Gun> guns = new ArrayList<Gun>();
 
 float camX = 0;
 float camY = 0;
@@ -38,10 +39,25 @@ void draw() {
   p1.update(platforms);
   p1.display();
 
+for(int i = guns.size() -1;i>=0; i--) {
+    Gun gun = guns.get(i);
+    gun.move();
+    gun.display();
+    
+    if(gun.isOffScreen()) {
+      guns.remove(i);
+    }
+  }
+
   popMatrix();
 }
 
 void mousePressed() {
+float worldMouseX = mouseX -camX;
+  float worldMouseY = mouseY -camY;
+  
+  Gun newLaser = new Gun(p1.x, p1.y, worldMouseX, worldMouseY);
+  guns.add(newLaser);
 }
 
 void keyPressed() {
