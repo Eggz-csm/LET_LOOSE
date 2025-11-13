@@ -19,7 +19,7 @@ class Player {
     yVel = 0;
     gravity = 0.8;
     jumpStrength = -15;
-    runGif  = new Gif(app, "RunGuy.gif");
+    runGif  = new Gif(app, "Runguy.gif");
     runGif.play();
     still = loadImage("Stillguy.png");
     gun = new Gun(this); // create gun bound to player
