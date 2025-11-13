@@ -55,6 +55,8 @@ class Platform {
     fill(c1);
     rectMode(CORNER);
     rect(x, y, w, h);
+strokeWeight(1);
+    stroke(0);
   }
 
   // Movement delta getters for player syncing
