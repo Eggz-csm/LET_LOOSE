@@ -24,8 +24,9 @@ void setup() {
   size(500, 500);
   p1 = new Player(this);
   lvm = new LevelManage();
-  btnStart    = new Button("Start", 150, 150, width/2, height/2);
+  btnStart    = new Button("Start", width/2, width/2, width/2, height/2);
   screen = 's';
+  
 }
 
 //-------------------------------------------------------
@@ -34,7 +35,9 @@ void draw() {
   background(22);
   // SCREEN MANAGE
   switch(screen) {
-  case 's':
+    
+    
+  case 's': // start screen - Ewan Carver
     background(20);
     btnStart.display();
     if (btnStart.clicked()) {
