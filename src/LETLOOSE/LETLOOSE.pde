@@ -4,7 +4,7 @@
 //-------------------------------------------------------
 
 char screen = 's';   // s = start, t = settings, p = play, u = pause, g = game over, a = app stats
-Button btnStart, btnMenu, btnSettings, btnBack;
+Button btnStart, btnPause, btnSettings, btnBack;
 
 import gifAnimation.*;
 Player p1;
@@ -29,7 +29,6 @@ void setup() {
   btnSettings    = new Button("Settings", 560/2+10, height/2+260, 560, 200);
   title = loadImage("LetLooseTitle.png");
   screen = 's';
-  
 }
 
 //-------------------------------------------------------
@@ -38,61 +37,50 @@ void draw() {
   background(22);
   // SCREEN MANAGE
   switch(screen) {
-    
-    
+
+
   case 's': // start screen - Ewan Carver
-    background(20);
     btnStart.display();
     btnSettings.display();
     if (btnStart.clicked()) {
-      
+
       screen = 'p';
-    
     } else if (btnSettings.clicked()) {
-    
+
       screen = 't';
-    
     }
     drawStart();
     break;
   case 't':
-     background(20);
+    background(20);
     drawSettings();
     break;
-  
+
   case 'u':
-     background(20);
+    background(20);
     btnStart.display();
     if (btnStart.clicked()) {
-    screen = 'p';
+      screen = 'p';
     }
-    drawStart();
+    drawPause();
     break;
   case 'g':
-     background(20);
-    btnStart.display();
-    if (btnStart.clicked()) {
-    screen = 'p';
-    }
-    drawStart();
+
+
+    drawGameOver();
     break;
   case 'a':
-     background(20);
-    btnStart.display();
-    if (btnStart.clicked()) {
-    screen = 'p';
-    }
-    drawStart();
+
+    drawStats();
     break;
-  case 'p':  
-  play();
+  case 'p':
+    play();
     break;
   }
-
 }
 
 void play() {
-    
+
 
   // Smoothly interpolate zoom (like camera position)
   float zoomLerpSpeed = 0.1; // smaller = slower/smoother
@@ -141,11 +129,11 @@ void play() {
   p1.display();
 
   popMatrix();
-  }
-void drawStart() { // start menu - Ewan Carver
+}
+void drawStart() {
   background(31, 0, 0);
   textAlign(CENTER);
- // textSize(32);
+  // textSize(32);
   //text("START SCREEN", width/2, 50);
   imageMode(CENTER);
   image(title, width/2, 800/2);
@@ -153,24 +141,40 @@ void drawStart() { // start menu - Ewan Carver
   btnSettings.display();
 }
 
-void drawMenu() {
+void drawPause() {
   background(120, 200, 140);
   textSize(32);
-  text("MENU SCREEN", width/2, 50);
-  btnMenu.display();
+  fill(255);
+  text("PAUSE SCREEN", width/2, 50);
+  // btnPause.display();
 }
 
 void drawSettings() {
   background(200, 150, 120);
   textSize(32);
+  fill(255);
   text("SETTINGS", width/2, 50);
   btnSettings.display();
+}
+void drawGameOver() {
+  background(0);
+  textSize(32);
+  fill(255);
+  text("GAME OVER", width/2, 50);
+  //btnRetry.display();
+}
+void drawStats() {
+  background(0);
+  textSize(32);
+  fill(0, 255, 0);
+  text("GET READY TO GET STATISTICAL", width/2, 50);
+  //btnRetry.display();
 }
 
 void mousePressed() {
   // Fire a bullet from the gun when mouse pressed.
   // Convert mouse to world coords again (mouseX,mouseY are screen coords)
- // Only shoot in play mode
+  // Only shoot in play mode
   if (screen == 'p') {
     float worldMouseX = (mouseX / zoom) - camX;
     float worldMouseY = (mouseY / zoom) - camY;
@@ -188,15 +192,14 @@ void keyPressed() {
   if (key == 'w'|| key == 'W') p1.jump();
   if (key == '+') targetZoom *= 1.1; // zoom in w/camera
   if (key == '-') targetZoom /= 1.1; // zoom out
-  
-  
+
+
   if (key == '1') screen = 's';
   if (key == '2') screen = 't';
   if (key == '3') screen = 'p';
   if (key == '4') screen = 'u';
   if (key == '5') screen = 'g';
   if (key == '6') screen = 'a';
-  
 }
 
 // When the key is released
