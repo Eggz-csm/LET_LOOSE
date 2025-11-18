@@ -1,4 +1,4 @@
-// Gabriel Farley, Ewan Carver, and Grace Perry | 11 Nov 2025 | LETLOOSE
+// Gabriel Farley, Ewan Carver, and Grace Perry | 18 Nov 2025 | LETLOOSE
 //----------------------------------------------------------------------
 //GLOBALS
 //-------------------------------------------------------
@@ -11,6 +11,7 @@ Player p1;
 LevelManage lvm;
 ArrayList<Platform> platforms = new ArrayList<Platform>();
 ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+PImage title;
 
 // Camera floats and controls
 float camX = 0;
@@ -21,10 +22,12 @@ float targetZoom = 1.0;   // where we want the zoom to go
 //-------------------------------------------------------
 
 void setup() {
-  size(500, 500);
+  size(1200, 800);
   p1 = new Player(this);
   lvm = new LevelManage();
-  btnStart    = new Button("Start", width/2, width/2, width/2, height/2);
+  btnStart    = new Button("Start", 640/2+10, height/2+100, 640, 240);
+  btnSettings    = new Button("Settings", 560/2+10, height/2+260, 560, 200);
+  title = loadImage("LetLooseTitle.png");
   screen = 's';
   
 }
@@ -40,18 +43,21 @@ void draw() {
   case 's': // start screen - Ewan Carver
     background(20);
     btnStart.display();
+    btnSettings.display();
     if (btnStart.clicked()) {
-    screen = 'p';
+      
+      screen = 'p';
+    
+    } else if (btnSettings.clicked()) {
+    
+      screen = 't';
+    
     }
     drawStart();
     break;
   case 't':
      background(20);
-    btnStart.display();
-    if (btnStart.clicked()) {
-    screen = 'p';
-    }
-    drawStart();
+    drawSettings();
     break;
   
   case 'u':
@@ -136,12 +142,15 @@ void play() {
 
   popMatrix();
   }
-void drawStart() {
-  background(100, 160, 200);
+void drawStart() { // start menu - Ewan Carver
+  background(31, 0, 0);
   textAlign(CENTER);
-  textSize(32);
-  text("START SCREEN", width/2, 50);
+ // textSize(32);
+  //text("START SCREEN", width/2, 50);
+  imageMode(CENTER);
+  image(title, width/2, 800/2);
   btnStart.display();
+  btnSettings.display();
 }
 
 void drawMenu() {
