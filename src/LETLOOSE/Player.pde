@@ -11,7 +11,7 @@ class Player {
 
   Player(PApplet app) {
     x = width / 2;
-    y = 400;
+    y = height - 20;
     w = 50;
     h = 50;
     ms = 5;
