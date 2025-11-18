@@ -1,4 +1,11 @@
 // Gabriel Farley, Ewan Carver, and Grace Perry | 11 Nov 2025 | LETLOOSE
+//----------------------------------------------------------------------
+//GLOBALS
+//-------------------------------------------------------
+
+char screen = 's';   // s = start, m = menu, t = settings, p = play, u = pause, g = game over, a = app stats
+Button btnStart, btnMenu, btnSettings, btnBack;
+
 import gifAnimation.*;
 Player p1;
 LevelManage lvm;
@@ -11,14 +18,40 @@ float camY = 0;
 float zoom = 1.0;         // actual zoom used for drawing
 float targetZoom = 1.0;   // where we want the zoom to go
 
+//-------------------------------------------------------
+
 void setup() {
   size(500, 500);
   p1 = new Player(this);
   lvm = new LevelManage();
+  btnStart    = new Button("Start", 150, 150, width/2, height/2);
+  screen = 's';
 }
+
+//-------------------------------------------------------
 
 void draw() {
   background(22);
+  // SCREEN MANAGE
+  switch(screen) {
+  case 's':
+    background(20);
+    btnStart.display();
+    if (btnStart.clicked()) {
+    screen = 'p';
+    }
+    drawStart();
+    break;
+  case 'p':
+    
+  play();
+    break;
+  }
+
+}
+
+void play() {
+    
 
   // Smoothly interpolate zoom (like camera position)
   float zoomLerpSpeed = 0.1; // smaller = slower/smoother
@@ -67,14 +100,38 @@ void draw() {
   p1.display();
 
   popMatrix();
+  }
+void drawStart() {
+  background(100, 160, 200);
+  textAlign(CENTER);
+  textSize(32);
+  text("START SCREEN", width/2, 50);
+  btnStart.display();
+}
+
+void drawMenu() {
+  background(120, 200, 140);
+  textSize(32);
+  text("MENU SCREEN", width/2, 50);
+  btnMenu.display();
+}
+
+void drawSettings() {
+  background(200, 150, 120);
+  textSize(32);
+  text("SETTINGS", width/2, 50);
+  btnSettings.display();
 }
 
 void mousePressed() {
   // Fire a bullet from the gun when mouse pressed.
   // Convert mouse to world coords again (mouseX,mouseY are screen coords)
-  float worldMouseX = (mouseX / zoom) - camX;
-  float worldMouseY = (mouseY / zoom) - camY;
-  p1.gun.fire(worldMouseX, worldMouseY, bullets);
+ // Only shoot in play mode
+  if (screen == 'p') {
+    float worldMouseX = (mouseX / zoom) - camX;
+    float worldMouseY = (mouseY / zoom) - camY;
+    p1.gun.fire(worldMouseX, worldMouseY, bullets);
+  }
 }
 
 void keyPressed() {
