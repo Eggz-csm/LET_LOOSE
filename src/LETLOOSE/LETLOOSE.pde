@@ -3,7 +3,7 @@
 //GLOBALS
 //-------------------------------------------------------
 
-char screen = 's';   // s = start, m = menu, t = settings, p = play, u = pause, g = game over, a = app stats
+char screen = 's';   // s = start, t = settings, p = play, u = pause, g = game over, a = app stats
 Button btnStart, btnMenu, btnSettings, btnBack;
 
 import gifAnimation.*;
@@ -42,8 +42,40 @@ void draw() {
     }
     drawStart();
     break;
-  case 'p':
-    
+  case 't':
+     background(20);
+    btnStart.display();
+    if (btnStart.clicked()) {
+    screen = 'p';
+    }
+    drawStart();
+    break;
+  
+  case 'u':
+     background(20);
+    btnStart.display();
+    if (btnStart.clicked()) {
+    screen = 'p';
+    }
+    drawStart();
+    break;
+  case 'g':
+     background(20);
+    btnStart.display();
+    if (btnStart.clicked()) {
+    screen = 'p';
+    }
+    drawStart();
+    break;
+  case 'a':
+     background(20);
+    btnStart.display();
+    if (btnStart.clicked()) {
+    screen = 'p';
+    }
+    drawStart();
+    break;
+  case 'p':  
   play();
     break;
   }
@@ -144,6 +176,15 @@ void keyPressed() {
   if (key == 'w'|| key == 'W') p1.jump();
   if (key == '+') targetZoom *= 1.1; // zoom in w/camera
   if (key == '-') targetZoom /= 1.1; // zoom out
+  
+  
+  if (key == '1') screen = 's';
+  if (key == '2') screen = 't';
+  if (key == '3') screen = 'p';
+  if (key == '4') screen = 'u';
+  if (key == '5') screen = 'g';
+  if (key == '6') screen = 'a';
+  
 }
 
 // When the key is released
