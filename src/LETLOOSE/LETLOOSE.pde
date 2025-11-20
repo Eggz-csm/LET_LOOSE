@@ -148,7 +148,7 @@ void drawPause() {
   text("PAUSE SCREEN", width/2, 50);
   // btnPause.display();
 }
-
+// Grace
 void drawSettings() {
   background(200, 150, 120);
   textSize(32);
@@ -156,6 +156,7 @@ void drawSettings() {
   text("SETTINGS", width/2, 50);
   btnSettings.display();
 }
+// Gabriel
 void drawGameOver() {
   background(0);
   textSize(32);
@@ -163,6 +164,7 @@ void drawGameOver() {
   text("GAME OVER", width/2, 50);
   //btnRetry.display();
 }
+// Ewan
 void drawStats() {
   background(0);
   textSize(32);
