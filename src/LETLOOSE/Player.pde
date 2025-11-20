@@ -10,8 +10,8 @@ class Player {
   Gun gun; // ← gun attached to player
 
   Player(PApplet app) {
-    x = width / 2;
-    y = height - 20;
+    x = 0;
+    y = 0;
     w = 50;
     h = 50;
     ms = 5;
@@ -80,25 +80,35 @@ class Player {
   }
 
   void resolveHorizontalCollisions(ArrayList<Platform> platforms) {
-    for (Platform p : platforms) {
-      if (collidesWith(p)) {
-        float overlapRight = (x + w/2) - p.x;
-        float overlapLeft  = (p.x + p.w) - (x - w/2);
-        float overlapYTop  = (y + h/2) - p.y;
-        float overlapYBottom = (p.y + p.h) - (y - h/2);
+  for (Platform p : platforms) {
 
-        if (abs(overlapRight) < abs(overlapYTop) && abs(overlapLeft) < abs(overlapYBottom)) {
-          continue;
-        }
+    if (collidesWith(p)) {
 
-        if (xVel > 0) {
-          x = p.x - w/2; // moving right, hit platform left side
+      // Amount the player overlaps the platform horizontally
+      float overlapLeft  = (p.x + p.w) - (x - w/2);
+      float overlapRight = (x + w/2) - p.x;
+
+      // Amount the player overlaps vertically
+      float overlapTop    = (y + h/2) - p.y;
+      float overlapBottom = (p.y + p.h) - (y - h/2);
+
+      // Only resolve horizontal if the horizontal overlap is smaller
+      if (min(overlapLeft, overlapRight) < min(overlapTop, overlapBottom)) {
+
+        if (xVel > 0) {  
+          // moving right, hit platform on its left side
+          x = p.x - w/2;
         } else if (xVel < 0) {
-          x = p.x + p.w + w/2; // moving left, hit right side
+          // moving left, hit platform on right side
+          x = p.x + p.w + w/2;
         }
+
+        xVel = 0;
       }
     }
   }
+}
+
 
   void resolveVerticalCollisions(ArrayList<Platform> platforms) {
     boolean groundedThisFrame = false;
