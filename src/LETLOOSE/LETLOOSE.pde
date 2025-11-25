@@ -5,7 +5,7 @@
 
 char screen = 's';   // s = start, t = settings, p = play, u = pause, g = game over, a = app stats
 Button btnStart, btnPause, btnSettings, btnBack;
-//score
+//score(score stuff by Grace)
 int score = 0;
 int lastScoreTime = 0;
 
