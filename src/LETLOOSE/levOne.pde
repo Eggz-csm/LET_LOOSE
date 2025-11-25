@@ -12,6 +12,7 @@ class levOne {
     platforms.add(new Platform(700, -600, 900, 100, color(255, 100, 255))); //purp
     platforms.add(new Platform(1600, -520, 100, 20, color(255, 255, 100))); //yellow
     platforms.add(new Platform(300, -700, 300, 100, color(255, 100, 100))); //red
+    platforms.add(new Platform(200, -1000, 100, 800, color(255, 100, 100))); //red
     
     
     
