@@ -5,6 +5,9 @@
 
 char screen = 's';   // s = start, t = settings, p = play, u = pause, g = game over, a = app stats
 Button btnStart, btnPause, btnSettings, btnBack;
+//score
+int score = 0;
+int lastScoreTime = 0;
 
 import gifAnimation.*;
 Player p1;
@@ -31,6 +34,7 @@ void setup() {
   btnSettings    = new Button("Settings", 560/2+10, height/2+260, 560, 200);
   title = loadImage("LetLooseTitle.png");
   screen = 's';
+lastScoreTime = millis();
 }
 
 //-------------------------------------------------------
@@ -127,10 +131,21 @@ void play() {
     if (b.dead) bullets.remove(i);
   }
 
+//score
+  if (millis() - lastScoreTime > 2000) {
+    score++;
+    lastScoreTime = millis(); // Reset the timer
+  }
+
   // Draw player + gun
   p1.display();
 
   popMatrix();
+//score
+textAlign(LEFT, TOP);
+  textSize(32);
+  fill(255);
+  text("Score: " + score, 20, 20);
 }
 void drawStart() {
   background(31, 0, 0);
