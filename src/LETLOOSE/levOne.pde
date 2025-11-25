@@ -4,9 +4,10 @@ class levOne {
     p1.y = 0;
     // Static platforms
     platforms.add(new Platform(0, 0, 900, 20, color(150, 200, 255))); //blue
-    platforms.add(new Platform(900, -80, 200, 80, color(255, 100, 100))); //red
+    platforms.add(new Platform(900, -80, 200, 100, color(255, 100, 100))); //red
     platforms.add(new Platform(1100, -400, 100, 420, color(150, 100, 100))); //purple
     platforms.add(new Platform(800, -200, 100, 20, color(255, 100, 100))); //red
+    platforms.add(new Platform(1000, -300, 100, 20, color(100, 255, 100))); //green
     
     
     
