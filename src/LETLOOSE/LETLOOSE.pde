@@ -22,6 +22,8 @@ float targetZoom = 1.0;   // where we want the zoom to go
 //-------------------------------------------------------
 
 void setup() {
+  pixelDensity(1);
+  noSmooth();
   size(1200, 800);
   p1 = new Player(this);
   lvm = new LevelManage();
