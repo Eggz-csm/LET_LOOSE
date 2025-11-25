@@ -30,6 +30,7 @@ Gabriel Farley - Programming, Environment design, and Writer
 ![Running](https://github.com/Eggz-csm/LET_LOOSE/blob/main/PreBuild_Images/Runguybig.gif?raw=true) ![Gorp](https://github.com/Eggz-csm/LET_LOOSE/blob/main/PreBuild_Images/bigGorp.gif?raw=true) 
 ![StartButton](https://github.com/Eggz-csm/LET_LOOSE/blob/main/src/LETLOOSE/data/StartButton.png?raw=true) 
 ![SettingsButton](https://github.com/Eggz-csm/LET_LOOSE/blob/main/src/LETLOOSE/data/SettingsButton.png?raw=true)
+![Sean](https://github.com/Eggz-csm/LET_LOOSE/blob/main/PreBuild_Images/BigShootySean.gif?raw=true)
 
 ## Timeline
 
