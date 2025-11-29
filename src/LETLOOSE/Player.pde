@@ -48,6 +48,13 @@ class Player {
      popMatrix();
         // Draw gun AFTER player sprite so it sits on top
         gun.display();
+
+
+      // player coords
+  textSize(16);
+  fill(255);
+  text(x, x, y+100);
+  text(y, x+100, y+100);
   }
 
 
