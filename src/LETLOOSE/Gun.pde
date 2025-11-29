@@ -23,7 +23,7 @@ class Gun {
     // Draw barrel (rectangle). Draw from player center to the right (0..length)
       rectMode(CORNER);
     // shift upward so it's centered vertically
-    rect(offsetRadius, -thickness/2, length, thickness, 3);
+    //rect(offsetRadius, -thickness/2, length, thickness, 3);
     // draw small muzzle
     fill(200,160,50);
     rect(offsetRadius + length, -thickness/2 - 2, 6, thickness + 4, 2);
