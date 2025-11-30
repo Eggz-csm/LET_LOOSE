@@ -1,4 +1,4 @@
-// Gabriel Farley, Ewan Carver, and Grace Perry | 18 Nov 2025 | LETLOOSE
+// Gabriel Farley, Ewan Carver, and Grace Perry | 30 Nov 2025 | LETLOOSE
 //----------------------------------------------------------------------
 //GLOBALS
 //-------------------------------------------------------
@@ -141,12 +141,24 @@ void play() {
   p1.display();
 
   popMatrix();
-//score
+  
+//drawing score onscreen
 textAlign(LEFT, TOP);
   textSize(32);
   fill(255);
   text("Score: " + score, 20, 20);
+  
+  
+  // movement fix for not moving when getting up
+if (p1.gettingUp) {
+  p1.moveLeft = false;
+  p1.moveRight = false;
+} 
+
 }
+
+
+
 void drawStart() {
   background(31, 0, 0);
   textAlign(CENTER);
@@ -202,14 +214,24 @@ void mousePressed() {
 }
 
 void keyPressed() {
-  if (key == 'a' || key == 'A') p1.moveLeft = true;
-  if (keyCode == LEFT) p1.moveLeft = true;
-  if (key == 'd'|| key == 'D') p1.moveRight = true;
-  if (keyCode == RIGHT) p1.moveRight = true;
-  if (key == ' ') p1.jump();
-  if (keyCode == UP) p1.jump();
-  if (key == 'w'|| key == 'W') p1.jump();
+  // Movement
+  if (p1.gettingUp == false) {
+    if (key == 'a' || key == 'A') p1.moveLeft = true;
+    if (keyCode == LEFT) p1.moveLeft = true;
+    if (key == 'd'|| key == 'D') p1.moveRight = true;
+    if (keyCode == RIGHT) p1.moveRight = true;
+    if (key == ' ') p1.jump();
+    if (keyCode == UP) p1.jump();
+    if (key == 'w'|| key == 'W') p1.jump();
+  } else {
+    if (key == 'a' || key == 'A') p1.moveLeft = false;
+    if (keyCode == LEFT) p1.moveLeft = false;
+    if (key == 'd'|| key == 'D') p1.moveRight = false;
+    if (keyCode == RIGHT) p1.moveRight = false;
+  }
+  
   if (key == '+') targetZoom *= 1.1; // zoom in w/camera
+  if (key == '=') targetZoom *= 1.1; // zoom in w/camera
   if (key == '-') targetZoom /= 1.1; // zoom out
 
 
