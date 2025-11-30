@@ -1,11 +1,17 @@
 class levOne {
+  
+  
+  final color COLOR_RED = color(255, 100, 100);
+    
+  
+  
   levOne() {
     p1.x = 2000;
     p1.y = -1225;
     // Static platforms
     platforms.add(new Platform(-200, 0, 1100, 20, color(150, 200, 255))); //l blue
      platforms.add(new Platform(-300, -1800, 600, 1600, color(255, 150, 100))); //orange up
-    platforms.add(new Platform(900, -80, 200, 100, color(255, 100, 100))); //red
+    platforms.add(new Platform(900, -80, 200, 100, COLOR_RED)); 
     platforms.add(new Platform(1100, -300, 100, 320, color(150, 100, 100))); //brun
     platforms.add(new Platform(800, -200, 100, 20, color(255, 100, 100))); //red
     platforms.add(new Platform(1000, -300, 100, 20, color(100, 255, 100))); //green
