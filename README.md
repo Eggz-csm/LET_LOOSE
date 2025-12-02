@@ -22,8 +22,25 @@ Grace Perry - Web and level design
 
 Gabriel Farley - Programming, Environment design, and Writer
 
-# Development Information
-### Basic information on our developement process and progress
+# TODO
+OVERALL TODO
+
+Implement level graphics
+Make enemies 
+Finish gameover screen
+Tweak start screen
+Enemy/bullet collision
+Enemy/player collision
+
+STRETCH GOALS
+
+Gun asset
+Make start screen / gameover screen buttons responsive
+Visual representation of damage (player, enemy)
+Make enemy spawners rather than set locations
+Extra player movement (dash/slide)
+Vignette 
+
 
 ## Assets
 
