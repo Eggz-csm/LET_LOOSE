@@ -22,6 +22,7 @@ ArrayList<Carl> carls = new ArrayList<Carl>();
 ArrayList<EnemyBullet> enemyBullets = new ArrayList<EnemyBullet>();
 
 PImage title;
+PGraphics maskLayer;
 
 // Camera floats and controls
 float camX = 0;
@@ -41,10 +42,28 @@ void setup() {
   btnSettings    = new Button("Settings", 560/2+10, height/2+260, 560, 200);
   title = loadImage("LetLooseTitle.png");
   screen = 's';
-lastScoreTime = millis();
+  lastScoreTime = millis();
+  maskLayer = createGraphics(width, height);
 }
 
 //-------------------------------------------------------
+
+//void drawMask() {
+//  maskLayer.beginDraw();
+//  maskLayer.background(95, 18, 18);
+//  maskLayer.blendMode(SUBTRACT);
+//  float centerX = (p1.x + camX) * zoom; 
+//float centerY = (p1.y + camY) * zoom; 
+//float coneRadius = 400 * zoom;
+//  maskLayer.noStroke();
+//  for (int r = (int)coneRadius; r > 0; r -= 10) {
+//    float alpha = map(r, 0, coneRadius, 255, 0);
+//    maskLayer.fill(alpha);
+//    maskLayer.ellipse(centerX, centerY, r * 2, r * 2);
+//  }
+//  maskLayer.endDraw();
+//  image(maskLayer,0,0);
+//}
 
 void draw() {
   background(22);
@@ -88,7 +107,7 @@ void draw() {
     break;
   case 'p':
     play();
-drawHUD();
+    drawHUD();
     break;
   }
 }
@@ -130,11 +149,11 @@ void play() {
     carls.get(i).display();
   }
   for (int i = carls.size()-1; i >= 0; i--) {
-  Carl c = carls.get(i);
-  c.update(p1);
-  c.display();
-  if (c.hp <= 0) carls.remove(i);
-}
+    Carl c = carls.get(i);
+    c.update(p1);
+    c.display();
+    if (c.hp <= 0) carls.remove(i);
+  }
   //Update enbullets
   for (int i = enemyBullets.size()-1; i >= 0; i--) {
     EnemyBullet eb = enemyBullets.get(i);
@@ -165,15 +184,18 @@ void play() {
   }
   // Draw player + gun
   p1.display();
-
-  popMatrix();
   
+  //drawMask();
+  
+  popMatrix();
+
+
   
   // movement fix for not moving when getting up
-if (p1.gettingUp) {
-  p1.moveLeft = false;
-  p1.moveRight = false;
-} 
+  if (p1.gettingUp) {
+    p1.moveLeft = false;
+    p1.moveRight = false;
+  }
 }
 void drawHUD() {
   fill(255);
@@ -255,7 +277,7 @@ void keyPressed() {
     if (key == 'd'|| key == 'D') p1.moveRight = false;
     if (keyCode == RIGHT) p1.moveRight = false;
   }
-  
+
   if (key == '+') targetZoom *= 1.1; // zoom in w/camera
   if (key == '=') targetZoom *= 1.1; // zoom in w/camera
   if (key == '-') targetZoom /= 1.1; // zoom out
