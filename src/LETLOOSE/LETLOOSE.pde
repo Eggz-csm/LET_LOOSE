@@ -81,6 +81,7 @@ void draw() {
     break;
   case 'p':
     play();
+drawHUD();
     break;
   }
 }
@@ -116,7 +117,32 @@ void play() {
     p.display();
     p.update();
   }
+  // --- Update all Carls ---
+  for (int i = carls.size()-1; i >= 0; i--) {
+    carls.get(i).update(p1);
+    carls.get(i).display();
+  }
+  for (int i = carls.size()-1; i >= 0; i--) {
+  Carl c = carls.get(i);
+  c.update(p1);
+  c.display();
+  if (c.hp <= 0) carls.remove(i);
+}
+  //Update enbullets
+  for (int i = enemyBullets.size()-1; i >= 0; i--) {
+    EnemyBullet eb = enemyBullets.get(i);
+    eb.update();
+    eb.display();
 
+    if (dist(eb.x, eb.y, p1.x, p1.y) < 30) {
+      playerHP -= 10;
+      eb.dead = true;
+
+      if (playerHP <= 0) screen = 'g';
+    }
+
+    if (eb.dead) enemyBullets.remove(i);
+  }
   // Update player (physics)
   p1.update(platforms);
 
@@ -130,23 +156,10 @@ void play() {
     b.display();
     if (b.dead) bullets.remove(i);
   }
-
-//score
-  if (millis() - lastScoreTime > 2000) {
-    score++;
-    lastScoreTime = millis(); // Reset the timer
-  }
-
   // Draw player + gun
   p1.display();
 
   popMatrix();
-  
-//drawing score onscreen
-textAlign(LEFT, TOP);
-  textSize(32);
-  fill(255);
-  text("Score: " + score, 20, 20);
   
   
   // movement fix for not moving when getting up
@@ -154,10 +167,16 @@ if (p1.gettingUp) {
   p1.moveLeft = false;
   p1.moveRight = false;
 } 
-
 }
+void drawHUD() {
+  fill(255);
+  textSize(24);
+  textAlign(LEFT);
+  text("HP: " + playerHP, 20, 40);
 
-
+  textAlign(RIGHT);
+  text("Score: " + score, width - 20, 40);
+}
 
 void drawStart() {
   background(31, 0, 0);
