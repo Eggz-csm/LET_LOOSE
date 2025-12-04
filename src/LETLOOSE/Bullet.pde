@@ -1,9 +1,9 @@
 class Bullet {
   float x, y;
   float vx, vy;
-  float speed = 12;
+  float speed = 25;
   float radius = 5;
-  int life = 90; // frames
+  int life = 90;
   boolean dead = false;
 
   Bullet(float x, float y, float angle) {
@@ -18,7 +18,16 @@ class Bullet {
     y += vy;
     life--;
     if (life <= 0) dead = true;
-    // Optionally: check collision with platforms or bounds and set dead = true
+
+    // Collision with carls
+    for (int i = carls.size()-1; i >= 0; i--) {
+      Carl c = carls.get(i);
+      if (dist(x, y, c.x, c.y) < 40) {
+        c.damage(25);
+        dead = true;
+        break;
+      }
+    }
   }
 
   void display() {
