@@ -7,13 +7,20 @@ char screen = 's';   // s = start, t = settings, p = play, u = pause, g = game o
 Button btnStart, btnPause, btnSettings, btnBack;
 //score(score stuff by Grace)
 int score = 0;
+int playerHP = 100;
 int lastScoreTime = 0;
 
 import gifAnimation.*;
+
 Player p1;
 LevelManage lvm;
+Carl carl1;
+
 ArrayList<Platform> platforms = new ArrayList<Platform>();
 ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+ArrayList<Carl> carls = new ArrayList<Carl>();
+ArrayList<EnemyBullet> enemyBullets = new ArrayList<EnemyBullet>();
+
 PImage title;
 
 // Camera floats and controls
