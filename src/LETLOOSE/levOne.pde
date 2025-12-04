@@ -1,5 +1,6 @@
 class levOne {
-  
+    Carl carl1;
+
   
   final color COLOR_RED = color(255, 100, 100);
     
@@ -8,6 +9,9 @@ class levOne {
   levOne() {
     p1.x = 1000;
     p1.y = -1925;
+    //enemies
+     carl1 = new Carl(300, -200);
+    carls.add(carl1);
     // Static platforms
     platforms.add(new Platform(-400, -380, 100, 400, color(150, 200, 255))); //l blue up
     platforms.add(new Platform(-300, 0, 1200, 20, color(150, 200, 255))); //l blue
@@ -70,6 +74,8 @@ class levOne {
   }
 
   void display() {
+      carl1.update(p1);
+    carl1.display();
   }
 }
   
