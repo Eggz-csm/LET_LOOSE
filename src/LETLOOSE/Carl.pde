@@ -22,7 +22,7 @@ class Carl {
     this.y = y;
     startX = x;
     startY = y;
-    sprite = loadImage("Carl.gif");
+    sprite = loadImage("ShootySean.gif");
   }
 
   void update(Player p) {
