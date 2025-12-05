@@ -3,7 +3,7 @@ class Carl {
   float speed = 1.2;
   float orbitDistance = 200;
   float hp = 5;
-  float shootCooldown = 120;
+  float shootCooldown = 300;
   float shootTimer = 0;
   float attackMode = 0;     // 0 = normal shots, 1 = spread shotsd
   float activationDistance = 50;   // how close player must be
@@ -14,6 +14,14 @@ class Carl {
 
   float startX, startY;       // original spawn position
 
+
+// Enemy flashing vars
+
+  boolean flashing = false;
+  int flashDuration = 150; // stays flashed for flashduration milis
+  int flashEndTime = 0; // when does the flash stop
+
+//
 
   PImage sprite;
 
@@ -82,6 +90,8 @@ class Carl {
       shootTimer = shootCooldown;
     }
   }
+  
+
 
 
   void shootDirect(Player p) {
@@ -105,6 +115,7 @@ class Carl {
     if (hp <= 0) {
       score += 1;    // add to global score
     }
+    flash();
   }
   
 void idleFloat() {
@@ -119,16 +130,43 @@ void idleFloat() {
 
   void display() {
     if (hp <= 0) return;
+    
+    pushStyle();
+    
+    if (flashing && millis() <flashEndTime) {
+
+    tint(255,100,100); // red
+    
+     
+    } else {
+    flashing = false;
+    }
 
     pushMatrix();
     translate(x, y);
 
     // Only face the player when active
     float ang = active ? atan2(p1.y - y, p1.x - x) : 0;
-
+    
     rotate(ang);
     imageMode(CENTER);
     image(sprite, 0, 0, 80, 80);
+    
     popMatrix();
+    popStyle();
+    
+  }
+  
+  
+  void flash() {
+    
+    flashing = true;
+    flashEndTime = millis() + flashDuration;
+  
+  
+  
+  
   }
 }
+ 
+ 
