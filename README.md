@@ -29,8 +29,8 @@ Gabriel Farley - Programming, Environment design, and Writer
 * Make enemies 
 * Finish gameover screen
 * Tweak start screen
-* Enemy/bullet collision
-* Enemy/player collision
+* Enemy/bullet collision (DONE)
+* Enemy/player collision (DONE)
 
 ## STRETCH GOALS
 
