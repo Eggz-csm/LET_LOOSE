@@ -22,13 +22,22 @@ class Carl {
   //
 
   PImage sprite;
+ 
+  SoundFile carlShoot1;
+  SoundFile carlShoot2;
+  SoundFile carlShoot3;
+  SoundFile hit;
 
-  Carl(float x, float y) {
+  Carl(float x, float y, SoundFile carlShoot1, SoundFile carlShoot2, SoundFile carlShoot3, SoundFile hit) {
     this.x = x;
     this.y = y;
     startX = x;
     startY = y;
     sprite = loadImage("ShootySean.gif");
+    this.carlShoot1 = carlShoot1;
+    this.carlShoot2 = carlShoot2;
+    this.carlShoot3 = carlShoot3;
+    this.hit = hit;
   }
 
   void update(Player p) {
@@ -94,10 +103,21 @@ class Carl {
 
   void shootDirect(Player p) {
     enemyBullets.add(new EnemyBullet(x, y, p.x, p.y));
+    
+    int r = int(random(2)); //chooses 0 or 1 randomly
+    
+    if (r==0) {
+    carlShoot1.play();
+    } else{
+    carlShoot2.play();
+    }
   }
 
   void shootSpread(Player p) {
     // Bullet spread stuffs woooooooo
+    
+      carlShoot3.play();
+      
     float base = atan2(p.y - y, p.x - x);
     float spread = radians(25);
 
@@ -114,6 +134,7 @@ class Carl {
       score += 1;    // add to global score
     }
     flash();
+    hit.play();
   }
 
   void idleFloat() {
