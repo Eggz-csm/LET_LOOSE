@@ -11,15 +11,15 @@ class levOne {
     p1.x = -208;
     p1.y = -49;
     //enemies
-    carl1 = new Carl(300, -100);
+    carl1 = new Carl(300, -100, carlShoot1, carlShoot2, carlShoot3, hit);
     carls.add(carl1);
-    carl2 = new Carl(1700, -700);
+    carl2 = new Carl(1700, -700, carlShoot1, carlShoot2, carlShoot3, hit);
     carls.add(carl2);
-    carl3 = new Carl(740, -960);
+    carl3 = new Carl(740, -960, carlShoot1, carlShoot2, carlShoot3, hit);
     carls.add(carl3);
-    carl4 = new Carl(820, -2890);
+    carl4 = new Carl(820, -2890, carlShoot1, carlShoot2, carlShoot3, hit);
     carls.add(carl4);
-    carl5 = new Carl(1000, -2000);
+    carl5 = new Carl(1000, -2000, carlShoot1, carlShoot2, carlShoot3, hit);
     carls.add(carl5);
     // Static platformsdd
     //platforms.add(new Platform(-400, -380, 100, 4w color(150, 200, 255))); //l blue
