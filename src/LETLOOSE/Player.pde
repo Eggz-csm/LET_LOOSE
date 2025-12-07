@@ -25,6 +25,13 @@ class Player {
   boolean isOnGround, getUp, gettingUp;
   boolean faceRight;
   boolean splatted;
+  
+  
+  boolean flashing = false;
+  int flashDuration = 150; // stays flashed for flashduration milis
+  int flashEndTime = 0; // when does the flash stop
+  
+  SoundFile splat;
 
   // --- Graphics ---
   Gif runGif;
@@ -33,7 +40,7 @@ class Player {
   // --- Gun ---
   Gun gun;
 
-  Player(PApplet app) {
+  Player(PApplet app, SoundFile splat) {
     x = 0;
     y = 0;
 
@@ -53,6 +60,8 @@ class Player {
     getup1 = loadImage("GetUp1.png");
     getup2 = loadImage("GetUp2.png");
     getup3 = loadImage("GetUp3.png");
+    
+    this.splat = splat;
 
     gun = new Gun(this);
   }
@@ -151,8 +160,10 @@ class Player {
         float impactVel = yVel;
         y = p.y - hitboxH/2 + 0.5;
 
-        if (abs(impactVel) >= SPLAT_VELOCITY) splatted = true;
+        if (abs(impactVel) >= SPLAT_VELOCITY) {
+          splatted = true;
 
+        }
         yVel = 0;
         grounded = true;
 
@@ -204,6 +215,14 @@ class Player {
   void display() {
     pushMatrix();
     imageMode(CENTER);
+    
+    pushStyle();
+    if (flashing && millis() <flashEndTime) {
+
+      tint(255, 100, 100); // red
+    } else {
+      flashing = false;
+    }
 
     // --- Getting up animation ---
     if (gettingUp) {
@@ -231,9 +250,10 @@ class Player {
         else { scale(-1, 1); image(still, -x, y-7, spriteW, spriteH); }
       }
     }
+    popStyle();
     popMatrix();
 
-    // --- Gun on top ---
+    // --- Gun on top ---d
     gun.display();
 
     // --- Trigger getting up after splat ---
@@ -242,6 +262,9 @@ class Player {
       f = 1;
       lastFrameTime = millis();
       splatted = false;
+      splat.play();
+      flash();
+      playerHP-= 10;
     }
      // optional player coords
     //textSize(16);
@@ -249,9 +272,14 @@ class Player {
     //text(x, x, y+100);
     //text(y, x+100, y+100);
 
-    // Optional: draw hitbox for debugging
+    // draw hitbox for debugging
     //noFill(); stroke(255, 0, 0);
     //rectMode(CENTER);
     //rect(x, y, hitboxW, hitboxH);
+  }
+   void flash() {
+
+    flashing = true;
+    flashEndTime = millis() + flashDuration;
   }
 }
