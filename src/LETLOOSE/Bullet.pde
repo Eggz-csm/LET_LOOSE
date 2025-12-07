@@ -4,6 +4,7 @@ class Bullet {
   float speed = 25;
   float radius = 5;
   int life = 90;
+  int dmg = 1;
   boolean dead = false;
 
   Bullet(float x, float y, float angle) {
@@ -23,7 +24,7 @@ class Bullet {
     for (int i = carls.size()-1; i >= 0; i--) {
       Carl c = carls.get(i);
       if (dist(x, y, c.x, c.y) < 40) {
-        c.damage(5);
+        c.damage(dmg);
         dead = true;
         break;
       }
@@ -39,3 +40,4 @@ class Bullet {
     popMatrix();
   }
 }
+
