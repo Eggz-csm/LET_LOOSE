@@ -1,7 +1,11 @@
-// Gabriel Farley, Ewan Carver, and Grace Perry | 30 Nov 2025 | LETLOOSE
+// Gabriel Farley, Ewan Carver, and Grace Perry | 7 Dec 2025 | LETLOOSE
 //----------------------------------------------------------------------
 //GLOBALS
 //-------------------------------------------------------
+
+import gifAnimation.*;
+import processing.sound.*;
+
 
 char screen = 's';   // s = start, t = settings, p = play, u = pause, g = game over, a = app stats
 Button btnStart, btnPause, btnSettings, btnBack;
@@ -10,7 +14,13 @@ int score = 0;
 int playerHP = 100;
 int lastScoreTime = 0;
 
-import gifAnimation.*;
+SoundFile carlShoot1;
+SoundFile carlShoot2;
+SoundFile carlShoot3;
+SoundFile shoot;
+SoundFile splat;
+SoundFile hit;
+
 
 Player p1;
 LevelManage lvm;
@@ -43,7 +53,16 @@ void setup() {
   pixelDensity(1);
   noSmooth();
   size(1200, 800);
-  p1 = new Player(this);
+  
+  shoot = new SoundFile(this, "GunFire.wav");
+  shoot.amp(0.0);
+  splat = new SoundFile(this, "Thump.wav");
+  hit = new SoundFile(this, "Hit.wav");
+  carlShoot1 = new SoundFile(this, "EnemyShoot1.wav");
+  carlShoot2 = new SoundFile(this, "EnemyShoot2.wav");
+  carlShoot3 = new SoundFile(this, "EnemyShoot3.wav");
+  
+  p1 = new Player(this, splat);
   lvm = new LevelManage();
   btnStart    = new Button("Start", 640/2+10, height/2+100, 640, 240);
   btnSettings    = new Button("Settings", 560/2+10, height/2+260, 560, 200);
@@ -155,6 +174,7 @@ void play() {
     if (dist(eb.x, eb.y, p1.x, p1.y) < 30) {
       playerHP -= 10;
       eb.dead = true;
+      p1.flash();
 
       if (playerHP <= 0) screen = 'g';
     }
@@ -197,6 +217,12 @@ void drawHUD() {
 
   textAlign(RIGHT);
   text("Score: " + score, width - 20, 40);
+  
+  rectMode(CENTER);
+  fill(255,178,178);
+  rect(width/2, height-50, 200, 20);
+  fill(208, 82, 82);
+  rect(width/2+playerHP-100, height-50, playerHP*2, 20);
 }
 
 void drawStart() {
@@ -260,9 +286,14 @@ void mousePressed() {
   // Convert mouse to world coords again (mouseX,mouseY are screen coords)
   // Only shoot in play mode
   if (screen == 'p') {
+    
+    shoot.play();
+    
     float worldMouseX = (mouseX / zoom) - camX;
     float worldMouseY = (mouseY / zoom) - camY;
     p1.gun.fire(worldMouseX, worldMouseY, bullets);
+  
+          
   }
 }
 
