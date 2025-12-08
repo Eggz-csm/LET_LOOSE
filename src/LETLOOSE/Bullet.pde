@@ -4,7 +4,7 @@ class Bullet {
   float speed = 25;
   float radius = 5;
   int life = 90;
-  int dmg = 1;
+  int dmg = 5;
   boolean dead = false;
 
   Bullet(float x, float y, float angle) {
@@ -40,4 +40,5 @@ class Bullet {
     popMatrix();
   }
 }
+
 
