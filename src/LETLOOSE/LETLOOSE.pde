@@ -7,7 +7,7 @@ import gifAnimation.*;
 import processing.sound.*;
 
 
-char screen = 's';   // s = start, t = settings, p = play, u = pause, g = game over, a = app stats
+char screen = 's';   // s = start, t = settings, p =dddddddddddddddddd play, u = pause, g = game over, a = app stats
 Button btnStart, btnPause, btnSettings, btnBack;
 //score(score stuff by Grace)
 int score = 0;
@@ -63,7 +63,7 @@ void setup() {
   carlShoot3 = new SoundFile(this, "EnemyShoot3.wav");
   
   p1 = new Player(this, splat);
-  lvm = new LevelManage();
+  lvm = new LevelManage(this);
   btnStart    = new Button("Start", 640/2+10, height/2+100, 640, 240);
   btnSettings    = new Button("Settings", 560/2+10, height/2+260, 560, 200);
   title = loadImage("LetLooseTitle.png");
@@ -325,6 +325,7 @@ void keyPressed() {
   if (key == '4') screen = 'u';
   if (key == '5') screen = 'g';
   if (key == '6') screen = 'a';
+  if (key == '0') p1.toggleDebug();
 }
 
 // When the key is released
