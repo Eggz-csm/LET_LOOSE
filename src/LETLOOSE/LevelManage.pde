@@ -4,9 +4,9 @@ class LevelManage {
   
   boolean tl, l1;
   
-  LevelManage() {
+  LevelManage(PApplet app) {
     l1 = true;
-    lv1 = new levOne();
+    lv1 = new levOne(app);
   }
   
   void display() {
