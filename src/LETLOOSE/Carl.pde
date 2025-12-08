@@ -6,7 +6,7 @@ class Carl {
   float shootCooldown = 300;
   float shootTimer = 300;
   float attackMode = 0;     // 0 = normal shots, 1 = spread shotsd
-  float activationDistance = 300;   // how close player must be
+  float activationDistance = 400;   // how close player must be
   boolean active = false;
   float idleTime = 0;
   float idleAmplitude = 15;   // how far it floats
@@ -21,19 +21,22 @@ class Carl {
 
   //
 
-  PImage sprite;
+  //PImage chompGif;
  
   SoundFile carlShoot1;
   SoundFile carlShoot2;
   SoundFile carlShoot3;
   SoundFile hit;
+  
+  Gif chompGif;
 
-  Carl(float x, float y, SoundFile carlShoot1, SoundFile carlShoot2, SoundFile carlShoot3, SoundFile hit) {
+  Carl(PApplet app, float x, float y, SoundFile carlShoot1, SoundFile carlShoot2, SoundFile carlShoot3, SoundFile hit) {
     this.x = x;
     this.y = y;
     startX = x;
     startY = y;
-    sprite = loadImage("ShootySean.gif");
+    chompGif  = new Gif(app, "ShootySean.gif");
+    chompGif.play();
     this.carlShoot1 = carlShoot1;
     this.carlShoot2 = carlShoot2;
     this.carlShoot3 = carlShoot3;
@@ -167,7 +170,7 @@ class Carl {
 
     rotate(ang);
     imageMode(CENTER);
-    image(sprite, 0, 0, 80, 80);
+    image(chompGif, 0, 0, 80, 80);
 
     popMatrix();
     popStyle();
