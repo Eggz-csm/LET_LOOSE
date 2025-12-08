@@ -25,18 +25,19 @@ Gabriel Farley - Programming, Environment design, and Writer
 # TODO
 ## OVERALL TODO
 
-* Implement level graphics
+* Implement level graphics (DONE)
 * Make enemies 
 * Finish gameover screen
 * Tweak start screen
 * Enemy/bullet collision (DONE)
 * Enemy/player collision (DONE)
+* Sound Effects (DONE)
 
 ## STRETCH GOALS
 
 * Gun asset
 * Make start screen / gameover screen buttons responsive
-* Visual representation of damage (player, enemy)
+* Visual representation of damage (player, enemy) (DONE)
 * Make enemy spawners rather than set locations
 * Extra player movement (dash/slide)
 * Vignette 
