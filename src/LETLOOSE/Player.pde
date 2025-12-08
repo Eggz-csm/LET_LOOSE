@@ -1,6 +1,7 @@
 class Player {
 
   final float SPLAT_VELOCITY = 25.0;
+  final float HITBOX_DEFAULT_WIDTH = 25.0;
 
   int lastFrameTime = 0;
   int f = 1;
@@ -9,7 +10,7 @@ class Player {
   float x, y;
 
   // --- Hitbox (collision) ---
-  float hitboxW = 40;
+  float hitboxW = HITBOX_DEFAULT_WIDTH;
   float hitboxH = 70;
 
   // --- Sprite (rendering) ---
@@ -26,17 +27,18 @@ class Player {
   boolean faceRight;
   boolean splatted;
   
-  
+  boolean debugEnabled = false;
+
   boolean flashing = false;
   int flashDuration = 150; // stays flashed for flashduration milis
   int flashEndTime = 0; // when does the flash stop
-  
+
   SoundFile splat;
 
   // --- Graphics ---
   Gif runGif;
   PImage still, getup1, getup2, getup3;
-  
+
   // --- Gun ---
   Gun gun;
 
@@ -60,17 +62,23 @@ class Player {
     getup1 = loadImage("GetUp1.png");
     getup2 = loadImage("GetUp2.png");
     getup3 = loadImage("GetUp3.png");
-    
+
     this.splat = splat;
 
     gun = new Gun(this);
   }
 
- void update(ArrayList<Platform> platforms) {
+  void update(ArrayList<Platform> platforms) {
     // --- Horizontal input ---
     if (moveLeft) xVel = -ms;
     else if (moveRight) xVel = ms;
     else xVel = 0;
+
+    if (xVel == 0) {
+      hitboxW = HITBOX_DEFAULT_WIDTH;
+    } else {
+      hitboxW = 50;
+    }
 
     // --- Horizontal movement ---
     x += xVel;
@@ -86,14 +94,14 @@ class Player {
     float stepSize = remainingY / steps;
 
     for (int i = 0; i < steps; i++) {
-        y += stepSize;
-        resolveVerticalCollisions(platforms);
-        // If player hits ground during steps, stop moving further
-        if (isOnGround && stepSize > 0) {
-            break;
-        }
+      y += stepSize;
+      resolveVerticalCollisions(platforms);
+      // If player hits ground during steps, stop moving further
+      if (isOnGround && stepSize > 0) {
+        break;
+      }
     }
-}
+  }
 
 
   void resolveHorizontalCollisions(ArrayList<Platform> platforms) {
@@ -131,9 +139,27 @@ class Player {
 
     // --- Pixel terrain (falling) ---
     if (yVel > 0) {
-      if (isSolidPixel(x, y + hitboxH/2 + 1)) {
+
+      boolean boxHitGround = false;
+      float hitX = x;
+
+      float left = x - hitboxW/2;
+      float right = x + hitboxW/2;
+
+      // lower left
+      if (isSolidPixel(left - 1, y + hitboxH/2 + 1)) {
+        boxHitGround = true;
+        hitX = left;
+      } else if (isSolidPixel(right + 1, y + hitboxH/2 + 1)) {
+        boxHitGround = true;
+        hitX = right;
+      }
+
+      //if (isSolidPixel(x, y + hitboxH/2 + 1)) {
+      if (boxHitGround) {
         float impactVel = yVel;
-        float gY = floorToSolidY(x, y + hitboxH/2);
+        //float gY = floorToSolidY(x, y + hitboxH/2);
+        float gY = floorToSolidY(hitX, y + hitboxH/2);
         y = gY - hitboxH/2 + 0.5;
 
         if (abs(impactVel) >= SPLAT_VELOCITY) splatted = true;
@@ -162,7 +188,6 @@ class Player {
 
         if (abs(impactVel) >= SPLAT_VELOCITY) {
           splatted = true;
-
         }
         yVel = 0;
         grounded = true;
@@ -190,9 +215,9 @@ class Player {
 
   boolean collidesWith(Platform p) {
     return (x + hitboxW/2 > p.x &&
-            x - hitboxW/2 < p.x + p.w &&
-            y + hitboxH/2 > p.y &&
-            y - hitboxH/2 < p.y + p.h);
+      x - hitboxW/2 < p.x + p.w &&
+      y + hitboxH/2 > p.y &&
+      y - hitboxH/2 < p.y + p.h);
   }
 
   float floorToSolidY(float wx, float wy) {
@@ -215,7 +240,7 @@ class Player {
   void display() {
     pushMatrix();
     imageMode(CENTER);
-    
+
     pushStyle();
     if (flashing && millis() <flashEndTime) {
 
@@ -226,28 +251,45 @@ class Player {
 
     // --- Getting up animation ---
     if (gettingUp) {
-      if (millis() - lastFrameTime > 300) { f++; lastFrameTime = millis(); }
+      if (millis() - lastFrameTime > 300) {
+        f++;
+        lastFrameTime = millis();
+      }
 
       if (faceRight) {
         if (f == 1) image(getup1, x + 10, y-7, spriteW, spriteH);
         else if (f == 2) image(getup2, x + 10, y-7, spriteW, spriteH);
         else if (f == 3) image(getup3, x + 10, y-7, spriteW, spriteH);
-        else { f = 1; gettingUp = false; }
+        else {
+          f = 1;
+          gettingUp = false;
+        }
       } else {
         scale(-1, 1);
         if (f == 1) image(getup1, -x + 5, y-7, spriteW, spriteH);
         else if (f == 2) image(getup2, -x + 5, y-7, spriteW, spriteH);
         else if (f == 3) image(getup3, -x + 5, y-7, spriteW, spriteH);
-        else { f = 1; gettingUp = false; }
+        else {
+          f = 1;
+          gettingUp = false;
+        }
       }
-    } 
+    }
     // --- Running / idle animation ---
     else {
-      if (moveLeft) { scale(-1, 1); image(runGif, -x, y-7, spriteW, spriteH); faceRight = false; }
-      else if (moveRight) { image(runGif, x, y-7, spriteW, spriteH); faceRight = true; }
-      else {
+      if (moveLeft) {
+        scale(-1, 1);
+        image(runGif, -x, y-7, spriteW, spriteH);
+        faceRight = false;
+      } else if (moveRight) {
+        image(runGif, x, y-7, spriteW, spriteH);
+        faceRight = true;
+      } else {
         if (faceRight) image(still, x, y-7, spriteW, spriteH);
-        else { scale(-1, 1); image(still, -x, y-7, spriteW, spriteH); }
+        else {
+          scale(-1, 1);
+          image(still, -x, y-7, spriteW, spriteH);
+        }
       }
     }
     popStyle();
@@ -266,18 +308,29 @@ class Player {
       flash();
       playerHP-= 10;
     }
-     // optional player coords
-    //textSize(16);
-    //fill(255);
-    //text(x, x, y+100);
-    //text(y, x+100, y+100);
 
-    // draw hitbox for debugging
-    //noFill(); stroke(255, 0, 0);
-    //rectMode(CENTER);
-    //rect(x, y, hitboxW, hitboxH);
+    if (debugEnabled)
+      drawDebugInfo();
   }
-   void flash() {
+  
+  void toggleDebug() {  
+    debugEnabled = !debugEnabled;
+  }
+
+  void drawDebugInfo() {
+    // player coords
+    textSize(16);
+    fill(255);
+    text(x, x, y+100);
+    text(y, x+100, y+100);
+
+    // hitbox
+    noFill();
+    stroke(255, 0, 0);
+    rectMode(CENTER);
+    rect(x, y, hitboxW, hitboxH);
+  }
+  void flash() {
 
     flashing = true;
     flashEndTime = millis() + flashDuration;
