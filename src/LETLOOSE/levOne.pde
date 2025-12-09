@@ -11,15 +11,15 @@ class levOne {
     p1.x = -208;
     p1.y = -49;
     //enemies
-    carl1 = new Carl(app, 300, -100, carlShoot1, carlShoot2, carlShoot3, hit);
+    carl1 = new Carl(app, 300, -100, carlShoot1, carlShoot2, carlShoot3, hit, carlDie);
     carls.add(carl1);
-    carl2 = new Carl(app, 1700, -700, carlShoot1, carlShoot2, carlShoot3, hit);
+    carl2 = new Carl(app, 1700, -700, carlShoot1, carlShoot2, carlShoot3, hit, carlDie);
     carls.add(carl2);
-    carl3 = new Carl(app, 740, -960, carlShoot1, carlShoot2, carlShoot3, hit);
+    carl3 = new Carl(app, 740, -960, carlShoot1, carlShoot2, carlShoot3, hit, carlDie);
     carls.add(carl3);
-    carl4 = new Carl(app, 820, -2890, carlShoot1, carlShoot2, carlShoot3, hit);
+    carl4 = new Carl(app, 820, -2890, carlShoot1, carlShoot2, carlShoot3, hit, carlDie);
     carls.add(carl4);
-    carl5 = new Carl(app, 1000, -2000, carlShoot1, carlShoot2, carlShoot3, hit);
+    carl5 = new Carl(app, 1000, -2000, carlShoot1, carlShoot2, carlShoot3, hit, carlDie);
     carls.add(carl5);
     // Static platformsdd
     //platforms.add(new Platform(-400, -380, 100, 4w color(150, 200, 255))); //l blue
@@ -81,8 +81,14 @@ class levOne {
      */
   }
 
-  void display() {
-    carl1.update(p1);
-    carl1.display();
+  void carlCheck() {
+    if (carl1.active || carl2.active || carl3.active || carl4.active || carl5.active) {
+    
+      
+      
+    }
+    
+    
+    
   }
 }
