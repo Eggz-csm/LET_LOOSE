@@ -15,6 +15,8 @@ int playerHP = 100;
 int lastScoreTime = 0;
 boolean anyCarlsActive = false;
 
+int deathStartTime = 0;
+
 SoundFile tense;
 SoundFile calm;
 
@@ -46,6 +48,8 @@ float level1Y = -3200;      // top boundary of level
 float level1W = 2700;       // width of level in world coords
 float level1H = 3200;       // height of level in world coords
 
+PImage god;
+
 
 // Camera floats and controls
 float camX = 0;
@@ -53,16 +57,22 @@ float camY = 0;
 float zoom = 1.0;         // actual zoom used for drawing
 float targetZoom = 1.0;   // where we want the zoom to go
 
+boolean bloodActive = false;
+float bloodTimer = 0;
+ArrayList<PVector> bloodPoints= new ArrayList<PVector>();
+
 //-------------------------------------------------------
 
 void setup() {
   pixelDensity(1);
   noSmooth();
   size(1200, 800);
-  
+
+  god = loadImage("GameOverDeath.jpeg");
+
   tense = new SoundFile(this, "facility_tense.wav");
   calm  = new SoundFile(this, "facility_calm.wav");
-  
+
   shoot = new SoundFile(this, "GunFire.wav");
   shoot.amp(0.0);
   splat = new SoundFile(this, "Thump.wav");
@@ -71,7 +81,7 @@ void setup() {
   carlShoot1 = new SoundFile(this, "EnemyShoot1.wav");
   carlShoot2 = new SoundFile(this, "EnemyShoot2.wav");
   carlShoot3 = new SoundFile(this, "EnemyShoot3.wav");
-  
+
   music = new MusicManage(tense, calm);
   p1 = new Player(this, splat);
   lvm = new LevelManage(this);
@@ -88,9 +98,14 @@ void setup() {
 //-------------------------------------------------------
 
 void draw() {
-  background(34,44,37);
+  background(34, 44, 37);
+  god.resize(1200, 800);
   // SCREEN MANAGE
   switch(screen) {
+
+  case 'd':      // NEW DYING STATE
+    drawDying();
+    break;
 
 
   case 's': // start screen - Ewan Carver
@@ -136,8 +151,8 @@ void draw() {
 
 void play() {
 
-  
-  
+
+
   music.startMusic();
   music.playMusic(); // runs ongoing music code
 
@@ -169,24 +184,24 @@ void play() {
     p.display();
     p.update();
   }
-  
+
   boolean anyCarlsActiveThisFrame = false;
   // --- Update all Carls ---
   for (int i = carls.size()-1; i >= 0; i--) {
     Carl c = carls.get(i);
     c.update(p1);
     c.display();
-    
+
     if (c.active) anyCarlsActiveThisFrame = true;
-    if (c.hp <= 0) carls.remove(i);    
+    if (c.hp <= 0) carls.remove(i);
   }
-  
-  if (anyCarlsActiveThisFrame != anyCarlsActive) { 
+
+  if (anyCarlsActiveThisFrame != anyCarlsActive) {
     anyCarlsActive = anyCarlsActiveThisFrame;
-    
+
     music.switchMusic();
   }
-    
+
   //Update enbullets
   for (int i = enemyBullets.size()-1; i >= 0; i--) {
     EnemyBullet eb = enemyBullets.get(i);
@@ -198,10 +213,16 @@ void play() {
       eb.dead = true;
       p1.flash();
 
-      if (playerHP <= 0) screen = 'g';
-    }
+      if (playerHP <= 0) {
+        triggerBloodSplatter();
+        deathStartTime = millis();  // begin 1-second freeze
+        screen = 'd';               // go to dying state
+        popMatrix();                // IMPORTANT: close matrix before leaving play()
+        return;                     // stop updating this frame
+      }
 
-    if (eb.dead) enemyBullets.remove(i);
+      if (eb.dead) enemyBullets.remove(i);
+    }
   }
   // Update player (physics)
   p1.update(platforms);
@@ -239,9 +260,9 @@ void drawHUD() {
 
   textAlign(RIGHT);
   text("Score: " + score, width - 20, 40);
-  
+
   rectMode(CENTER);
-  fill(255,178,178);
+  fill(255, 178, 178);
   rect(width/2, height-50, 200, 20);
   fill(208, 82, 82);
   rect(width/2+playerHP-100, height-50, playerHP*2, 20);
@@ -275,10 +296,8 @@ void drawSettings() {
 }
 // Gabriel
 void drawGameOver() {
-  background(0);
-  textSize(32);
-  fill(255);
-  text("GAME OVER", width/2, 50);
+  background(god);
+  if (bloodActive) drawBloodSplatter();
   //btnRetry.display();
 }
 // Ewan
@@ -291,15 +310,15 @@ void drawStats() {
 }
 boolean isSolidPixel(float wx, float wy) {
 
-    // world → image
-    float fx = map(wx, level1X, level1X + level1W, 0, level1Img.width  - 1);
-    float fy = map(wy, level1Y, level1Y + level1H, 0, level1Img.height - 1);
+  // world → image
+  float fx = map(wx, level1X, level1X + level1W, 0, level1Img.width  - 1);
+  float fy = map(wy, level1Y, level1Y + level1H, 0, level1Img.height - 1);
 
-    int ix = constrain(int(fx), 0, level1Img.width  - 1);
-    int iy = constrain(int(fy), 0, level1Img.height - 1);
+  int ix = constrain(int(fx), 0, level1Img.width  - 1);
+  int iy = constrain(int(fy), 0, level1Img.height - 1);
 
-    int c = level1Img.get(ix, iy);
-    return alpha(c) > 20;
+  int c = level1Img.get(ix, iy);
+  return alpha(c) > 20;
 }
 
 
@@ -308,14 +327,12 @@ void mousePressed() {
   // Convert mouse to world coords again (mouseX,mouseY are screen coords)
   // Only shoot in play mode
   if (screen == 'p') {
-    
+
     shoot.play();
-    
+
     float worldMouseX = (mouseX / zoom) - camX;
     float worldMouseY = (mouseY / zoom) - camY;
     p1.gun.fire(worldMouseX, worldMouseY, bullets);
-  
-          
   }
 }
 
@@ -347,9 +364,9 @@ void keyPressed() {
   if (key == '4') screen = 'u';
   if (key == '5') screen = 'g';
   if (key == '6') screen = 'a';
-  
+
   if (key == '0') p1.toggleDebug();
-  
+
   if (key == 'p') music.switchMusic();
 }
 
@@ -359,4 +376,83 @@ void keyReleased() {
   if (keyCode == LEFT) p1.moveLeft = false;
   if (key == 'd'|| key == 'D') p1.moveRight = false;
   if (keyCode == RIGHT) p1.moveRight = false;
+}
+
+
+void triggerBloodSplatter() {
+  bloodActive = true;
+  bloodTimer = 0;
+  bloodPoints.clear();
+
+  // Make ~120 droplets
+  for (int i = 0; i < 120; i++) {
+
+    // Each blood droplet has:
+    // - screen position (random around center)
+    // - size
+    // - a little motion offset
+
+    float angle = random(TWO_PI);
+    float dist = random(20, 700);
+
+    float x = width/2 + cos(angle) * dist;
+    float y = height/2 + sin(angle) * dist;
+
+    bloodPoints.add(new PVector(x, y));
+  }
+}
+void drawBloodSplatter() {
+
+  bloodTimer += 0.02;
+
+  // Opacity fades out
+  float alpha = map(bloodTimer, 0, 1.0, 255, 0);
+  alpha = constrain(alpha, 0, 255);
+
+  noStroke();
+  fill(180, 0, 0, alpha); // dark-red blood
+
+  // Draw all splatter points
+  for (PVector p : bloodPoints) {
+    float size = random(80, 160);
+    ellipse(p.x, p.y, size, size);
+  }
+
+  // After 1 second, turn it off
+  if (bloodTimer >= 1.0) {
+    bloodActive = false;
+  }
+}
+
+void drawDying() {
+
+  // Draw frozen scene from last frame
+  playFrozenFrame();
+
+  // Draw blood splatter on top
+  if (bloodActive) drawBloodSplatter();
+
+  // After 1 second → go to Game Over
+  if (millis() - deathStartTime >= 1000) {
+    screen = 'g';
+  }
+}
+
+void playFrozenFrame() {
+
+  pushMatrix();
+  scale(zoom);
+  translate(camX, camY);
+
+  // Draw level and all objects exactly as they last were
+  lvm.display();
+
+  for (Platform p : platforms)        p.display();
+  for (Carl c : carls)                c.display();
+  for (EnemyBullet eb : enemyBullets) eb.display();
+  for (Bullet b : bullets)            b.display();
+
+  p1.display();
+
+  popMatrix();
 }
