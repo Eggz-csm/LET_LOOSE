@@ -151,7 +151,7 @@ void draw() {
 
 void play() {
 
-
+  if(playerHP <= 0) screen = 'g';
 
   music.startMusic();
   music.playMusic(); // runs ongoing music code
@@ -267,7 +267,7 @@ void drawHUD() {
   fill(208, 82, 82);
   rect(width/2+playerHP-100, height-50, playerHP*2, 20);
 }
-
+// Ewan
 void drawStart() {
   background(31, 0, 0);
   textAlign(CENTER);
@@ -299,6 +299,7 @@ void drawGameOver() {
   background(god);
   if (bloodActive) drawBloodSplatter();
   //btnRetry.display();
+  music.endMusic();
 }
 // Ewan
 void drawStats() {
@@ -456,3 +457,4 @@ void playFrozenFrame() {
 
   popMatrix();
 }
+
