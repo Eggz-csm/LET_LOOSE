@@ -14,23 +14,26 @@ class Carl {
   float startX, startY;       // original spawn position
 
 
+ 
+
   // Enemy flashing vars
   boolean flashing = false;
   int flashDuration = 150; // stays flashed for flashduration milis
   int flashEndTime = 0; // when does the flash stop
 
   //
-
+  
   //PImage chompGif;
  
   SoundFile carlShoot1;
   SoundFile carlShoot2;
   SoundFile carlShoot3;
   SoundFile hit;
+  SoundFile carlDie;
   
   Gif chompGif;
 
-  Carl(PApplet app, float x, float y, SoundFile carlShoot1, SoundFile carlShoot2, SoundFile carlShoot3, SoundFile hit) {
+  Carl(PApplet app, float x, float y, SoundFile carlShoot1, SoundFile carlShoot2, SoundFile carlShoot3, SoundFile hit, SoundFile carlDie) {
     this.x = x;
     this.y = y;
     startX = x;
@@ -41,11 +44,14 @@ class Carl {
     this.carlShoot2 = carlShoot2;
     this.carlShoot3 = carlShoot3;
     this.hit = hit;
+    this.carlDie = carlDie;
   }
 
   void update(Player p) {
-    if (hp <= 0) return;
-
+    if (hp <= 0) {
+      carlDie.play();
+      return;
+    }
     float d = dist(x, y, p.x, p.y);
     // --- Idle mode (enemy is dormant) ---
     if (!active) {
@@ -60,6 +66,7 @@ class Carl {
     if (!active) {
       if (d < activationDistance) {
         active = true;  // wakes up
+        
       } else {
         return;         // stays dormant
       }
