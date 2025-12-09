@@ -1,4 +1,4 @@
-// Gabriel Farley, Ewan Carver, and Grace Perry | 7 Dec 2025 | LETLOOSE
+// Gabriel Farley, Ewan Carver, and Grace Perry | 8 Dec 2025 | LETLOOSE
 //----------------------------------------------------------------------
 //GLOBALS
 //-------------------------------------------------------
@@ -7,12 +7,16 @@ import gifAnimation.*;
 import processing.sound.*;
 
 
-char screen = 's';   // s = start, t = settings, p =dddddddddddddddddd play, u = pause, g = game over, a = app stats
+char screen = 's';   // s = start, t = settings, p = play, u = pause, g = game over, a = app stats
 Button btnStart, btnPause, btnSettings, btnBack;
 //score(score stuff by Grace)
 int score = 0;
 int playerHP = 100;
 int lastScoreTime = 0;
+boolean anyCarlsActive = false;
+
+SoundFile tense;
+SoundFile calm;
 
 SoundFile carlShoot1;
 SoundFile carlShoot2;
@@ -20,11 +24,13 @@ SoundFile carlShoot3;
 SoundFile shoot;
 SoundFile splat;
 SoundFile hit;
+SoundFile carlDie;
 
 
 Player p1;
 LevelManage lvm;
-Carl carl1;
+MusicManage music;
+//Carl carl1; //TODO: clean this up
 
 ArrayList<Platform> platforms = new ArrayList<Platform>();
 ArrayList<Bullet> bullets = new ArrayList<Bullet>();
@@ -54,14 +60,19 @@ void setup() {
   noSmooth();
   size(1200, 800);
   
+  tense = new SoundFile(this, "facility_tense.wav");
+  calm  = new SoundFile(this, "facility_calm.wav");
+  
   shoot = new SoundFile(this, "GunFire.wav");
   shoot.amp(0.0);
   splat = new SoundFile(this, "Thump.wav");
   hit = new SoundFile(this, "Hit.wav");
+  carlDie = new SoundFile(this, "CarlDie.wav");
   carlShoot1 = new SoundFile(this, "EnemyShoot1.wav");
   carlShoot2 = new SoundFile(this, "EnemyShoot2.wav");
   carlShoot3 = new SoundFile(this, "EnemyShoot3.wav");
   
+  music = new MusicManage(tense, calm);
   p1 = new Player(this, splat);
   lvm = new LevelManage(this);
   btnStart    = new Button("Start", 640/2+10, height/2+100, 640, 240);
@@ -125,6 +136,10 @@ void draw() {
 
 void play() {
 
+  
+  
+  music.startMusic();
+  music.playMusic(); // runs ongoing music code
 
   // Smoothly interpolate zoom (like camera position)
   float zoomLerpSpeed = 0.1; // smaller = slower/smoother
@@ -154,17 +169,24 @@ void play() {
     p.display();
     p.update();
   }
+  
+  boolean anyCarlsActiveThisFrame = false;
   // --- Update all Carls ---
-  for (int i = carls.size()-1; i >= 0; i--) {
-    carls.get(i).update(p1);
-    carls.get(i).display();
-  }
   for (int i = carls.size()-1; i >= 0; i--) {
     Carl c = carls.get(i);
     c.update(p1);
     c.display();
-    if (c.hp <= 0) carls.remove(i);
+    
+    if (c.active) anyCarlsActiveThisFrame = true;
+    if (c.hp <= 0) carls.remove(i);    
   }
+  
+  if (anyCarlsActiveThisFrame != anyCarlsActive) { 
+    anyCarlsActive = anyCarlsActiveThisFrame;
+    
+    music.switchMusic();
+  }
+    
   //Update enbullets
   for (int i = enemyBullets.size()-1; i >= 0; i--) {
     EnemyBullet eb = enemyBullets.get(i);
@@ -240,7 +262,7 @@ void drawPause() {
   background(120, 200, 140);
   textSize(32);
   fill(255);
-  text("PAUSE SCREEN", width/2, 50);
+  text("PAUSE SCREEN (WIP!!!)", width/2, 50);
   // btnPause.display();
 }
 // Grace
@@ -248,7 +270,7 @@ void drawSettings() {
   background(200, 150, 120);
   textSize(32);
   fill(255);
-  text("SETTINGS", width/2, 50);
+  text("SETTINGS (WIP!!!)", width/2, 50);
   btnSettings.display();
 }
 // Gabriel
@@ -264,7 +286,7 @@ void drawStats() {
   background(0);
   textSize(32);
   fill(0, 255, 0);
-  text("GET READY TO GET STATISTICAL", width/2, 50);
+  text("STATS (WIP!!!)", width/2, 50);
   //btnRetry.display();
 }
 boolean isSolidPixel(float wx, float wy) {
@@ -325,7 +347,10 @@ void keyPressed() {
   if (key == '4') screen = 'u';
   if (key == '5') screen = 'g';
   if (key == '6') screen = 'a';
+  
   if (key == '0') p1.toggleDebug();
+  
+  if (key == 'p') music.switchMusic();
 }
 
 // When the key is released
