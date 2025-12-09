@@ -151,6 +151,7 @@ void play() {
   // Always update volumes (for fade switching)
   music.playMusic();
 
+  if (playerHP >= 0) screen = 'g';
 
   // Smoothly interpolate zoom (like camera position)
   float zoomLerpSpeed = 0.1; // smaller = slower/smoother
@@ -566,3 +567,4 @@ void playFrozenFrame() {
 
   popMatrix();
 }
+
