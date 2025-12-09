@@ -1,8 +1,9 @@
 class Carl { // Gabriel - coding main    Ewan - art, flashing animation, and sound design
   float x, y;
-  float speed = 1.2;
+  float speed = 2;
   float orbitDistance = 200;
-  float hp = 30;
+  float mxhp = 50;
+  float hp = mxhp;
   float shootCooldown = 300;
   float shootTimer = 300;
   float attackMode = 0;     // 0 = normal shots, 1 = spread shotsd
@@ -49,7 +50,7 @@ class Carl { // Gabriel - coding main    Ewan - art, flashing animation, and sou
     float d = dist(x, y, p.x, p.y);
     // --- Idle mode (enemy is dormant) ---
     if (!active) {
-      if (d < activationDistance || hp < 30) {
+      if (d < activationDistance || hp < mxhp) {
         active = true;
       } else {
         idleFloat();    // << run idle motion
@@ -58,7 +59,7 @@ class Carl { // Gabriel - coding main    Ewan - art, flashing animation, and sou
     }
     // Check activation
     if (!active) {
-      if (d < activationDistance || hp < 30) {
+      if (d < activationDistance || hp < mxhp) {
         active = true;  // wakes up
       } else {
         return;         // stays dormant
@@ -184,3 +185,4 @@ class Carl { // Gabriel - coding main    Ewan - art, flashing animation, and sou
     flashEndTime = millis() + flashDuration;
   }
 }
+
