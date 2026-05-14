@@ -26,7 +26,10 @@ class Player { // Gabriel- coding main (physics, collisions, and controls) | Ewa
   boolean isOnGround, getUp, gettingUp;
   boolean faceRight;
   boolean splatted;
-  
+
+  int coyoteTime = 120; // milliseconds
+  int lastGroundedTime = 0;
+
   boolean debugEnabled = false;
 
   boolean flashing = false;
@@ -211,6 +214,9 @@ class Player { // Gabriel- coding main (physics, collisions, and controls) | Ewa
       y = round(y * 2) / 2.0;
       yVel = 0;
     }
+    if (isOnGround) {
+      lastGroundedTime = millis();
+    }
   }
 
   boolean collidesWith(Platform p) {
@@ -231,9 +237,18 @@ class Player { // Gabriel- coding main (physics, collisions, and controls) | Ewa
   }
 
   void jump() {
-    if (isOnGround) {
+
+    boolean canUseCoyote =
+      millis() - lastGroundedTime <= coyoteTime;
+
+    if (isOnGround || canUseCoyote) {
+
       yVel = jumpStrength;
+
       isOnGround = false;
+
+      // prevents double-use
+      lastGroundedTime = -9999;
     }
   }
 
@@ -312,8 +327,8 @@ class Player { // Gabriel- coding main (physics, collisions, and controls) | Ewa
     if (debugEnabled)
       drawDebugInfo();
   }
-  
-  void toggleDebug() {  
+
+  void toggleDebug() {
     debugEnabled = !debugEnabled;
   }
 

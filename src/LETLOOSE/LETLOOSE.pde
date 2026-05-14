@@ -19,7 +19,7 @@ int playerHP = 100;
 boolean anyCarlsActive = false;
 
 int deathStartTime = 0;
-
+ 
 SoundFile tense;
 SoundFile calm;
 SoundFile carlShoot1;
@@ -567,5 +567,3 @@ void playFrozenFrame() {
 
   popMatrix();
 }
-
-

@@ -185,4 +185,3 @@ class Carl { // Gabriel - coding main    Ewan - art, flashing animation, and sou
     flashEndTime = millis() + flashDuration;
   }
 }
-

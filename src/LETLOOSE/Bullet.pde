@@ -6,12 +6,17 @@ class Bullet { // Gabriel and Ewan
   int life = 90;
   int dmg = 5;
   boolean dead = false;
+  PImage Onion;
+  float spriteW = 70;
+  float spriteH = 78;
+
 
   Bullet(float x, float y, float angle) {
     this.x = x;
     this.y = y;
     vx = cos(angle) * speed;
     vy = sin(angle) * speed;
+    Onion = loadImage("Onion.png");
   }
 
   void update() {
@@ -27,7 +32,7 @@ class Bullet { // Gabriel and Ewan
         c.damage(dmg);
         sh+=1;
         dead = true;
-        
+
         // >>> ADD COMBO INCREASE + HIGH COMBO <<<
         combo++;
         if (combo > highCombo) highCombo = combo;
@@ -41,8 +46,10 @@ class Bullet { // Gabriel and Ewan
     pushMatrix();
     translate(x, y);
     noStroke();
-    fill(255, 220, 60);
-    ellipse(0, 0, radius*2, radius*2);
+    //fill(255, 220, 60);
+    //ellipse(0, 0, radius*2, radius*2);
+    scale(-1, 1);
+    image(Onion, 0, 0, radius*2, radius*2);
     popMatrix();
   }
 }
