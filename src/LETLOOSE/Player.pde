@@ -27,6 +27,43 @@ class Player { // Gabriel- coding main (physics, collisions, and controls) | Ewa
   boolean faceRight;
   boolean splatted;
 
+  // --- Stamina ---
+  float stamina = 100;
+  float maxStamina = 140;
+
+  // regeneration per frame
+  float staminaRegen = 0.35; 
+  int staminaRechargeDelay = 1000;
+  int lastStaminaUse = 0;
+
+  // costs
+  float dashCost = 20;
+  float wallJumpCost = 20;
+
+  // --- Dash ---
+  boolean dashing = false;
+  boolean canDash = true;
+
+  float dashSpeed = 18;
+  int dashDuration = 200; // milliseconds
+  int dashCooldown = 500;
+
+  int dashStartTime = 0;
+  int lastDashTime = -9999;
+
+  // --- Wall Sliding / Wall Jump ---
+  boolean wallSliding = false;
+  boolean touchingWallLeft = false;
+  boolean touchingWallRight = false;
+
+  float wallSlideSpeed = 3.0;
+
+  float wallJumpX = 10;
+  float wallJumpY = -14;
+
+  int wallJumpLockTime = 200;
+  int wallJumpLockEnd = 0;
+
   int coyoteTime = 120; // milliseconds
   int lastGroundedTime = 0;
 
@@ -40,7 +77,7 @@ class Player { // Gabriel- coding main (physics, collisions, and controls) | Ewa
 
   // --- Graphics ---
   Gif runGif;
-  PImage still, getup1, getup2, getup3;
+  PImage still, getup1, getup2, getup3, dash, wallSlide;
 
   // --- Gun ---
   Gun gun;
@@ -65,6 +102,8 @@ class Player { // Gabriel- coding main (physics, collisions, and controls) | Ewa
     getup1 = loadImage("GetUp1.png");
     getup2 = loadImage("GetUp2.png");
     getup3 = loadImage("GetUp3.png");
+    dash = loadImage("Dashguy1.png");
+    wallSlide = loadImage("GetUp2.png");
 
     this.splat = splat;
 
@@ -72,10 +111,40 @@ class Player { // Gabriel- coding main (physics, collisions, and controls) | Ewa
   }
 
   void update(ArrayList<Platform> platforms) {
+
+    // --- Recharge stamina ---
+    if (millis() - lastStaminaUse >= staminaRechargeDelay) {
+
+      stamina += staminaRegen;
+      stamina = constrain(stamina, 0, maxStamina);
+    }
+    // --- Dash timer ---
+    if (dashing) {
+
+      // Keep velocity constant during dash
+      if (faceRight) xVel = dashSpeed;
+      else xVel = -dashSpeed;
+
+      // Optional: disable gravity during dash
+      yVel = 0;
+
+      // End dash
+      if (millis() - dashStartTime >= dashDuration) {
+        dashing = false;
+      }
+    }
     // --- Horizontal input ---
-    if (moveLeft) xVel = -ms;
-    else if (moveRight) xVel = ms;
-    else xVel = 0;
+    if (!dashing) {
+
+      // During wall jump lock,
+      // ignore movement input
+      if (millis() > wallJumpLockEnd) {
+
+        if (moveLeft) xVel = -ms;
+        else if (moveRight) xVel = ms;
+        else xVel = 0;
+      }
+    }
 
     if (xVel == 0) {
       hitboxW = HITBOX_DEFAULT_WIDTH;
@@ -88,7 +157,11 @@ class Player { // Gabriel- coding main (physics, collisions, and controls) | Ewa
     resolveHorizontalCollisions(platforms);
 
     // --- Apply gravity ---
-    yVel += gravity;
+    if (!dashing) {
+      yVel += gravity;
+    }
+
+    checkWallSlide();
 
     // --- Step-based vertical movement to prevent tunneling ---
     float remainingY = yVel;
@@ -103,6 +176,10 @@ class Player { // Gabriel- coding main (physics, collisions, and controls) | Ewa
       if (isOnGround && stepSize > 0) {
         break;
       }
+    }
+    // Reset dash after cooldown
+    if (!canDash && millis() - lastDashTime >= dashCooldown) {
+      canDash = true;
     }
   }
 
@@ -236,19 +313,96 @@ class Player { // Gabriel- coding main (physics, collisions, and controls) | Ewa
     return wy - 1 + 0.5;
   }
 
+  void checkWallSlide() {
+
+    touchingWallLeft =
+      isSolidPixel(x - hitboxW/2 - 2, y);
+
+    touchingWallRight =
+      isSolidPixel(x + hitboxW/2 + 2, y);
+
+    // --- Wall slide condition ---
+    wallSliding =
+      !isOnGround &&
+      yVel > 0 &&
+      (
+      (touchingWallLeft && moveLeft) ||
+      (touchingWallRight && moveRight)
+      );
+
+    // --- Apply slide slowdown ---
+    if (wallSliding) {
+
+      yVel = min(yVel, wallSlideSpeed);
+
+      // Optional: stick player to wall
+      xVel = 0;
+    }
+  }
+
   void jump() {
 
     boolean canUseCoyote =
       millis() - lastGroundedTime <= coyoteTime;
 
+    // --- Normal jump ---
     if (isOnGround || canUseCoyote) {
 
       yVel = jumpStrength;
 
       isOnGround = false;
 
-      // prevents double-use
       lastGroundedTime = -9999;
+      return;
+    }
+
+    // --- Wall jump ---
+    if (wallSliding) {
+
+      if (stamina < wallJumpCost) return;
+
+      stamina -= wallJumpCost;
+
+      lastStaminaUse = millis();
+
+      yVel = wallJumpY;
+
+      if (touchingWallLeft) {
+        xVel = wallJumpX;
+        faceRight = true;
+      } else if (touchingWallRight) {
+        xVel = -wallJumpX;
+        faceRight = false;
+      }
+
+      wallSliding = false;
+
+      wallJumpLockEnd = millis() + wallJumpLockTime;
+    }
+  }
+
+  void dash() {
+
+    if (!canDash || dashing) return;
+
+    if (stamina < dashCost) return;
+
+    stamina -= dashCost;
+
+    lastStaminaUse = millis();
+
+    dashing = true;
+    canDash = false;
+
+    dashStartTime = millis();
+    lastDashTime = millis();
+
+    yVel = 0;
+
+    if (faceRight) {
+      xVel = dashSpeed;
+    } else {
+      xVel = -dashSpeed;
     }
   }
 
@@ -290,8 +444,34 @@ class Player { // Gabriel- coding main (physics, collisions, and controls) | Ewa
         }
       }
     }
+
+    // --- Dash animation ---
+    if (dashing) {
+
+      if (faceRight) {
+        image(dash, x, y - 7, spriteW, spriteH);
+      } else {
+        scale(-1, 1);
+        image(dash, -x, y - 7, spriteW, spriteH);
+      }
+    }
+
+    // --- Wall Slide Animation ---
+    else if (wallSliding) {
+
+      if (touchingWallLeft) {
+
+        scale(-1, 1);
+        image(wallSlide, -x, y - 7, spriteW, spriteH);
+      } else {
+
+        image(wallSlide, x, y - 7, spriteW, spriteH);
+      }
+    }
+
     // --- Running / idle animation ---
     else {
+
       if (moveLeft) {
         scale(-1, 1);
         image(runGif, -x, y-7, spriteW, spriteH);
@@ -300,6 +480,7 @@ class Player { // Gabriel- coding main (physics, collisions, and controls) | Ewa
         image(runGif, x, y-7, spriteW, spriteH);
         faceRight = true;
       } else {
+
         if (faceRight) image(still, x, y-7, spriteW, spriteH);
         else {
           scale(-1, 1);

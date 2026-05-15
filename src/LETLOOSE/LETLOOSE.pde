@@ -3,7 +3,7 @@
 // Gabe - Coding player physics, stats, pixel collision, camera, and enemy ai
 // Ewan - Input sound design, adaptive music, animations and art, as well as organizing code
 // Grace - Start screen, setup screen system, made original concept level, did art for screens
-//GLOBALS 
+//GLOBALS
 //-------------------------------------------------------
 
 import gifAnimation.*;
@@ -19,7 +19,7 @@ int playerHP = 100;
 boolean anyCarlsActive = false;
 
 int deathStartTime = 0;
- 
+
 SoundFile tense;
 SoundFile calm;
 SoundFile carlShoot1;
@@ -105,10 +105,10 @@ void draw() {
   case 'd':      // NEW DYING STATE
     drawDying();
     break;
-  //case 't':
-  //  background(20);
-  //  drawSettings();
-  //  break;
+    //case 't':
+    //  background(20);
+    //  drawSettings();
+    //  break;
 
   case 'u':
     background(20);
@@ -269,18 +269,38 @@ void play() {
 void drawHUD() {
   fill(255);
   textSize(24);
-  textAlign(LEFT);
-  text("HP: " + playerHP, 20, 40);
+  //textAlign(LEFT);
+  //text("HP: " + playerHP, 20, 40);
   textAlign(LEFT);
   text("Combo: " + combo, 20, 70);
   textAlign(RIGHT);
-  text("Score: " + score, width - 20, 40);
+  text("Kills: " + score, width - 20, 40);
 
   rectMode(CENTER);
   fill(255, 178, 178);
   rect(width/2, height-50, 200, 20);
   fill(208, 82, 82);
   rect(width/2+playerHP-100, height-50, playerHP*2, 20);
+  // --- Stamina Bar ---
+  rectMode(CENTER);
+
+  // background
+  fill(180);
+  rect(width/2, height - 20, 200, 5);
+
+  // --- Stamina Bar Color/Amount ---
+  if (p1.stamina < 20) {
+
+    fill(255, 100, 100); // red when low
+  } else {
+
+    fill(255, 255, 255); // normal blue
+  }
+
+  float staminaWidth =
+    map(p1.stamina, 0, p1.maxStamina, 0, 200);
+
+  rect(width/2 - 100 + staminaWidth/2, height - 20, staminaWidth, 5);
 }
 
 void drawStart() {
@@ -295,10 +315,10 @@ void drawStart() {
 }
 
 void drawPause() {
-  background(31, 0, 0);
-  imageMode(CORNER);
-  image(pausescreen, 0, 0, width, height);
-  
+  background(120, 200, 140);
+  textSize(32);
+  fill(255);
+  text("PAUSE SCREEN", width/2, 50);
   // btnPause.display();
 }
 //// Grace
@@ -389,6 +409,9 @@ void keyPressed() {
     if (keyCode == LEFT) p1.moveLeft = false;
     if (key == 'd'|| key == 'D') p1.moveRight = false;
     if (keyCode == RIGHT) p1.moveRight = false;
+  }
+  if (key == 'e') {
+    p1.dash();
   }
 
   if (key == '+') targetZoom *= 1.1; // zoom in w/camera

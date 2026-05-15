@@ -7,8 +7,8 @@ class Bullet { // Gabriel and Ewan
   int dmg = 5;
   boolean dead = false;
   PImage Onion;
-  float spriteW = 70;
-  float spriteH = 78;
+  //float spriteW = 70;
+  //float spriteH = 78;
 
 
   Bullet(float x, float y, float angle) {

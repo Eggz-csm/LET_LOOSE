@@ -4,10 +4,12 @@ class EnemyBullet { //Gabriel
   float radius = 6;
   int life = 240;
   boolean dead = false;
+  PImage Onion;
 
   EnemyBullet(float x, float y, float tx, float ty) {
     this.x = x;
     this.y = y;
+    Onion = loadImage("Onion.png");
 
     float angle = atan2(ty - y, tx - x);
     vx = cos(angle) * speed;
@@ -25,8 +27,9 @@ class EnemyBullet { //Gabriel
     pushMatrix();
     translate(x, y);
     noStroke();
-    fill(255, 60, 60);
-    ellipse(0, 0, radius*2, radius*2);
+    //fill(255, 60, 60);
+    scale(-1, 1);
+    image(Onion, 0, 0, radius*2, radius*2);
     popMatrix();
   }
 }
