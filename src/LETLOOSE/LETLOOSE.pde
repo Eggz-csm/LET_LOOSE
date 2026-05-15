@@ -45,6 +45,7 @@ PImage god;
 PImage title;
 PImage GO;
 Gif select; // selection gif
+Gif pausescreen;
 PImage level1Img; //collision img
 PImage level1vis; // actual render
 PImage level1bg; //shade version
@@ -76,6 +77,8 @@ void setup() {
   debugMousecoord = false;
   died = false;
   restart();
+  pausescreen  = new Gif(this, "pausescreen.gif");
+  pausescreen.play();
 }
 
 //-------------------------------------------------------
@@ -292,10 +295,10 @@ void drawStart() {
 }
 
 void drawPause() {
-  background(120, 200, 140);
-  textSize(32);
-  fill(255);
-  text("PAUSE SCREEN", width/2, 50);
+  background(31, 0, 0);
+  imageMode(CORNER);
+  image(pausescreen, 0, 0, width, height);
+  
   // btnPause.display();
 }
 //// Grace
