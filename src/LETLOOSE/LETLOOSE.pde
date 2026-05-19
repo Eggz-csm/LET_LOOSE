@@ -550,7 +550,7 @@ void restart() {
 
   btnRestart = new Button("Restart", width*4/5, 310, 420, 140);
 
-  btnSettingsP = new Button("SettingsP", width*4/5, 480, 420, 140);
+  btnSettingsP = new Button("SettingsP", width*4/5 + 24, 480, 420, 140);
 
   btnQuit = new Button("Quit", width*4/5, 650, 420, 140);
 
