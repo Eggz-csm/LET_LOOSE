@@ -31,8 +31,8 @@ Gabriel Farley - Programming, Environment design, and Writer
 
 * Implement level graphics (DONE)
 * Make enemies 
-* Finish gameover screen
-* Tweak start screen
+* Finish gameover screen (DONE)
+* Tweak start screen 
 * Enemy/bullet collision (DONE)
 * Enemy/player collision (DONE)
 * Sound Effects (DONE)
@@ -40,11 +40,12 @@ Gabriel Farley - Programming, Environment design, and Writer
 ## STRETCH GOALS
 
 * Gun asset
-* Make start screen / gameover screen buttons responsive
+* Make start screen / gameover screen buttons responsive (DONE)
 * Visual representation of damage (player, enemy) (DONE)
 * Make enemy spawners rather than set locations
-* Extra player movement (dash/slide)
-* Vignette 
+* Extra player movement (dash/slide) (DONE)
+* Vignette
+* Damage indication numbers when hitting enemy
 
 
 ## Assets
@@ -54,10 +55,9 @@ Gabriel Farley - Programming, Environment design, and Writer
 ![SettingsButton](https://github.com/Eggz-csm/LET_LOOSE/blob/main/src/LETLOOSE/data/SettingsButton.png?raw=true)
 ![Sean](https://github.com/Eggz-csm/LET_LOOSE/blob/main/PreBuild_Images/BigShootySean.gif?raw=true)
 
-## Timeline
-
-![Timeline](https://github.com/Eggz-csm/LET_LOOSE/blob/main/PreBuild_Images/Timeline.png?raw=true)
 
 ## Class Diagram
 
 ![ClassDiagram](https://github.com/Eggz-csm/LET_LOOSE/blob/main/PreBuild_Images/ClassDiagram.png?raw=true)
+
+![trauma](https://github.com/Eggz-csm/LET_LOOSE/blob/main/src/LETLOOSE/data/pausescreen.gif?raw=true)
