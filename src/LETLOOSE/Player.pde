@@ -511,6 +511,9 @@ class Player { // Gabriel- coding main (physics, collisions, and controls) | Ewa
 
   void toggleDebug() {
     debugEnabled = !debugEnabled;
+
+   // keep mouse coords synced with debug mode
+    debugMousecoord = debugEnabled;
   }
 
   void drawDebugInfo() {
