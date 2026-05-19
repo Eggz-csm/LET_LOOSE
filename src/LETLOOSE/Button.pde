@@ -14,11 +14,29 @@ class Button {
     this.h = h;
     if (label.equals("Start")) {
 
-      button = loadImage("StartButton.png");
-    } else if (label.equals("Settings")) {
+    button = loadImage("StartButton.png");
 
-      button = loadImage("SettingsButton.png");
-    }
+      } else if (label.equals("Settings")) {
+
+    button = loadImage("settingsbutton.png");
+
+      } else if (label.equals("Resume")) {
+
+    button = loadImage("resumebutton.png");
+
+      } else if (label.equals("Restart")) {
+
+    button = loadImage("restartbutton.png");
+
+      } else if (label.equals("Quit")) {
+
+    button = loadImage("quitbutton.png");
+    
+      } else if (label.equals("SettingsP")) {
+      
+    button = loadImage("settingsbutton.png");    
+        
+      }
   }
 
   void display() {

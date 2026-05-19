@@ -102,8 +102,8 @@ class Player { // Gabriel- coding main (physics, collisions, and controls) | Ewa
     getup1 = loadImage("GetUp1.png");
     getup2 = loadImage("GetUp2.png");
     getup3 = loadImage("GetUp3.png");
-    dash = loadImage("Dashguy1.png");
-    wallSlide = loadImage("GetUp2.png");
+    dash = loadImage("Dashguy2.png");
+    wallSlide = loadImage("WallJumpGuy.png");
 
     this.splat = splat;
 

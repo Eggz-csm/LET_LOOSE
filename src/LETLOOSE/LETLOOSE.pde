@@ -11,7 +11,7 @@ import processing.sound.*;
 
 
 char screen = 's';   // s = start, t = settings, p = play, u = pause, g = game over, a = app stats
-Button btnStart, btnPause, btnSettings, btnBack;
+Button btnStart, btnPause, btnSettings, btnBack, btnResume, btnRestart, btnQuit, btnSettingsP;
 
 int score = 0;
 int combo, lastComboHitTime, comboDecayDelay, highCombo;
@@ -77,7 +77,7 @@ void setup() {
   debugMousecoord = false;
   died = false;
   restart();
-  pausescreen  = new Gif(this, "pausescreen.gif");
+  pausescreen = new Gif(this, "pausescreen.gif");
   pausescreen.play();
 }
 
@@ -315,12 +315,45 @@ void drawStart() {
 }
 
 void drawPause() {
-  background(120, 200, 140);
-  textSize(32);
-  fill(255);
-  text("PAUSE SCREEN", width/2, 50);
-  // btnPause.display();
+  background(31, 0, 0);
+  imageMode(CORNER);
+  image(pausescreen, 0, 0, width, height);
+  
+   // draw buttons
+   
+  btnResume.display();
+  btnRestart.display();
+  btnSettingsP.display();
+  btnQuit.display();
+
+  // RESUME
+  
+  if (btnResume.clicked()) {
+    screen = 'p';
+  }
+
+  // RESTART
+  
+  if (btnRestart.clicked()) {
+    restart();
+    screen = 'p';
+  }
+
+  // SETTINGS
+  
+  if (btnSettings.clicked()) {
+    screen = 't';
+  }
+
+  // QUIT
+  
+  if (btnQuit.clicked()) {
+    exit();
+  }
+  
 }
+
+
 //// Grace
 //void drawSettings() {
 //  background(200, 150, 120);
@@ -510,7 +543,16 @@ void restart() {
 
   // --- Recreate menu buttons ---
   btnStart    = new Button("Start", 640/2+10, height/2+100, 640, 240);
+  
   btnSettings = new Button("Settings", 560/2+10, height/2+260, 560, 200);
+  
+  btnResume  = new Button("Resume",  width*4/5, 140, 420, 140);
+
+  btnRestart = new Button("Restart", width*4/5, 310, 420, 140);
+
+  btnSettingsP = new Button("SettingsP", width*4/5, 480, 420, 140);
+
+  btnQuit = new Button("Quit", width*4/5, 650, 420, 140);
 
   if (died) {
     screen = 'p';
