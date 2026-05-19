@@ -1,4 +1,4 @@
-// Gabriel Farley, Ewan Carver, and Grace Perry | 7 Dec 2025 | LETLOOSE
+// Gabriel Farley, Ewan Carver, and Grace Perry | 19 May 2026 | LETLOOSE
 //----------------------------------------------------------------------
 // Gabe - Coding player physics, stats, pixel collision, camera, and enemy ai
 // Ewan - Input sound design, adaptive music, animations and art, as well as organizing code
@@ -131,6 +131,10 @@ void draw() {
   case 'p':
     play();
     drawHUD();
+    break;
+    
+  case 't': 
+    drawSettings();
     break;
   }
   // DEBUG: Onscreen mouse coords
@@ -312,6 +316,10 @@ void drawStart() {
   image(title, width/2, 800/2);
   btnStart.display();
   btnSettings.display();
+  
+   if (btnSettings.clicked()) {
+    screen = 't';
+  } 
 }
 
 void drawPause() {
@@ -341,9 +349,11 @@ void drawPause() {
 
   // SETTINGS
   
-  if (btnSettings.clicked()) {
+  
+   if (btnSettingsP.clicked()) {
     screen = 't';
-  }
+  } 
+  
 
   // QUIT
   
@@ -354,14 +364,14 @@ void drawPause() {
 }
 
 
-//// Grace
-//void drawSettings() {
-//  background(200, 150, 120);
-//  textSize(32);
-//  fill(255);
-//  text("SETTINGS", width/2, 50);
-//  btnSettings.display();
-//}
+// Grace
+void drawSettings() {
+  background(200, 150, 120);
+  textSize(32);
+  fill(255);
+  text("SETTINGS", width/2, 50);
+
+}
 // Gabriel
 void drawEnd() {
   imageMode(CORNER);
