@@ -18,7 +18,7 @@ class Button {
 
       } else if (label.equals("Settings")) {
 
-    button = loadImage("settingsbutton.png");
+    button = loadImage("SettingsButton.png");
 
       } else if (label.equals("Resume")) {
 
@@ -34,7 +34,7 @@ class Button {
     
       } else if (label.equals("SettingsP")) {
       
-    button = loadImage("settingsbutton.png");    
+    button = loadImage("SettingsButton.png");    
         
       }
   }
