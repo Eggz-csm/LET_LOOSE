@@ -90,6 +90,11 @@
       /* Styles content lists */
       padding-left: 20px;
     }
+    main a {
+
+        color: rgb(210, 225, 210);
+        
+    }
     footer {
       /* Styles the footer section */
       height: 20%;
