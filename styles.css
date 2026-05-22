@@ -74,7 +74,7 @@
       padding: 10px;
       box-sizing: border-box;
     }
-    main p, main h2, main ul {
+    main p, main h2, main ul, main li {
       /* Styles content text and lists */
       margin: 0 0 10px 0;
       font-size: 16px;
